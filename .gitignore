@@ -1,0 +1,12 @@
+protobuf/jni/*
+protobuf/obj/
+!protobuf/jni/config.h
+!protobuf/jni/ndk-configure.sh
+!protobuf/jni/Android.mk
+!protobuf/jni/Application.mk
+
+caffe-mobile/jni/eigen3/
+caffe-mobile/jni/include/
+caffe-mobile/jni/src/
+caffe-mobile/obj/
+
