@@ -1,3 +1,7 @@
+boost/
+eigen3/
+opencv/
+
 protobuf/jni/*
 protobuf/obj/
 !protobuf/jni/config.h
@@ -5,8 +9,5 @@ protobuf/obj/
 !protobuf/jni/Android.mk
 !protobuf/jni/Application.mk
 
-caffe-mobile/jni/eigen3/
-caffe-mobile/jni/include/
-caffe-mobile/jni/src/
 caffe-mobile/obj/
 

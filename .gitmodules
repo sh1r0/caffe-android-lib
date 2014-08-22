@@ -1,0 +1,3 @@
+[submodule "caffe-mobile/jni/caffe"]
+	path = caffe-mobile/jni/caffe
+	url = git@github.com:sh1r0/caffe.git
