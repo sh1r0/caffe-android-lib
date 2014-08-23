@@ -17,5 +17,5 @@ if [ ! -d "caffe-mobile/jni/$EIGEN_DIR"]; then
 		wget http://bitbucket.org/eigen/eigen/get/3.2.2.tar.bz2
 	fi
 	tar jxf 3.2.2.tar.bz2
-	mv eigen-eigen-1306d75b4a21 caffe-mobile/jni/$EIGEN_DIR
+	mv eigen-eigen-1306d75b4a21 $EIGEN_DIR
 fi

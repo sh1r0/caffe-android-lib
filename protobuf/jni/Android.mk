@@ -37,12 +37,12 @@ src/google/protobuf/stubs/substitute.cc
 # =======================================================
 #include $(CLEAR_VARS)
 
-LOCAL_MODULE := libprotobuf
+LOCAL_MODULE := protobuf
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_CPP_EXTENSION := .cc
 
-LOCAL_SRC_FILES := $(COMPILER_SRC_FILES) 
+LOCAL_SRC_FILES := $(COMPILER_SRC_FILES)
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/src
 
