@@ -22,6 +22,7 @@ caffe/src/caffe/util/math_functions.cpp \
 caffe/src/caffe/util/insert_splits.cpp \
 caffe/src/caffe/util/im2col.cpp \
 caffe/src/caffe/util/io.cpp \
+caffe/src/caffe/util/format.cpp \
 caffe/src/caffe/blob.cpp \
 caffe/src/caffe/net.cpp \
 caffe/src/caffe/layers/pooling_layer.cpp \
@@ -54,7 +55,8 @@ caffe/src/caffe/layers/infogain_loss_layer.cpp \
 caffe/src/caffe/layers/softmax_loss_layer.cpp \
 caffe/src/caffe/layers/sigmoid_cross_entropy_loss_layer.cpp \
 caffe/src/caffe/layers/dropout_layer.cpp \
-caffe/src/caffe/layers/image_data_layer.cpp
+caffe/src/caffe/layers/image_data_layer.cpp \
+mira-cnn.cpp
 
 PRORO_CC := caffe/src/caffe/proto/caffe.pb.cc \
 caffe/src/caffe/proto/caffe_pretty_print.pb.cc
@@ -76,19 +78,19 @@ LOCAL_LDLIBS += -lboost_random-gcc-mt-1_55 -lboost_math_tr1-gcc-mt-1_55
 include $(BUILD_SHARED_LIBRARY)
 
 #-----------------------------------------------------------------------------
-include $(CLEAR_VARS)
-LOCAL_MODULE := mira-cnn
+# include $(CLEAR_VARS)
+# LOCAL_MODULE := mira-cnn
 
-LOCAL_SRC_FILES := mira-cnn.cpp
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 $(LOCAL_PATH)/caffe/include \
-$(LOCAL_PATH)/../../boost/include/boost-1_55 \
-$(LOCAL_PATH)/../../opencv/jni/include
+# LOCAL_SRC_FILES := mira-cnn.cpp
+# LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 $(LOCAL_PATH)/caffe/include \
+# $(LOCAL_PATH)/../../boost/include/boost-1_55 \
+# $(LOCAL_PATH)/../../opencv/jni/include
 
 # LOCAL_STATIC_LIBRARIES += caffe
-LOCAL_SHARED_LIBRARIES := caffe
-LOCAL_LDLIBS := -llog
-LOCAL_CPPFLAGS += -fexceptions -frtti -std=c++11 -DUSE_EIGEN -DCPU_ONLY
+# LOCAL_SHARED_LIBRARIES := caffe
+# LOCAL_LDLIBS := -llog
+# LOCAL_CPPFLAGS += -fexceptions -frtti -std=c++11 -DUSE_EIGEN -DCPU_ONLY
 
 # LOCAL_ARM_MODE  := arm
 
-include $(BUILD_SHARED_LIBRARY)
+# include $(BUILD_SHARED_LIBRARY)

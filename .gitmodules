@@ -1,4 +1,4 @@
 [submodule "caffe-mobile/jni/caffe"]
 	path = caffe-mobile/jni/caffe
 	url = git@github.com:sh1r0/caffe.git
-	branch = mobile
+	branch = image_from_memory

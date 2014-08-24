@@ -24,7 +24,7 @@ Java_com_sh1r0_cnn_MainActivity_runTest(JNIEnv* env, jobject thiz)
 {
     caffe::LogMessage::Enable(true);
     int t_s = getTimeSec();
-    int result = test(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"));
+    int result = test(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"), string("/sdcard/cnn_test/images/cat.jpg"));
     int t_e = getTimeSec();
     LOGD("time elapsed: %d s", t_e - t_s);
     LOGD("result: %d", result);
