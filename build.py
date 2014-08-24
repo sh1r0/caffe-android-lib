@@ -7,7 +7,7 @@ from distutils.dir_util import copy_tree
 
 
 NDK_PATH = '/home/shiro/android-ndk-r9'
-PROJECT_PATH = '/home/shiro/MiRA-CNN'
+PROJECT_LIB_PATH = '/home/shiro/MiRA-CNN/libs'
 WD = ''
 
 PROTOBUF_URL = 'https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2'
@@ -56,7 +56,7 @@ def build_caffe():
     os.chdir('caffe-mobile')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
     call(['ndk-build'])
-    copy_tree("libs/", PROJECT_PATH);
+    copy_tree("libs/", PROJECT_LIB_PATH);
     os.chdir(WD)
 
 
