@@ -11,7 +11,12 @@ include $(PREBUILT_STATIC_LIBRARY)
 
 #-----------------------------------------------------------------------------
 include $(CLEAR_VARS)
+
+OpenCV_INSTALL_MODULES := on
+OPENCV_CAMERA_MODULES := off
+OPENCV_LIB_TYPE := STATIC
 include $(LOCAL_PATH)/../../opencv/jni/OpenCV.mk
+
 LOCAL_MODULE := caffe
 # LOCAL_MODULE_TAGS := optional
 
@@ -55,42 +60,44 @@ caffe/src/caffe/layers/infogain_loss_layer.cpp \
 caffe/src/caffe/layers/softmax_loss_layer.cpp \
 caffe/src/caffe/layers/sigmoid_cross_entropy_loss_layer.cpp \
 caffe/src/caffe/layers/dropout_layer.cpp \
-caffe/src/caffe/layers/image_data_layer.cpp \
-mira-cnn.cpp
+caffe/src/caffe/layers/image_data_layer.cpp
 
 PRORO_CC := caffe/src/caffe/proto/caffe.pb.cc \
 caffe/src/caffe/proto/caffe_pretty_print.pb.cc
 
 LOCAL_SRC_FILES := $(CXX_SRCS) $(PRORO_CC)
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 $(LOCAL_PATH)/caffe/include \
-$(LOCAL_PATH)/../../boost/include/boost-1_55 \
+$(LOCAL_PATH)/../../Boost-for-Android/build/include/boost-1_55 \
 $(LOCAL_PATH)/../../opencv/jni/include
 
 LOCAL_STATIC_LIBRARIES += protobuf
 LOCAL_CPPFLAGS += -fPIC -fexceptions -frtti -std=c++11 -DUSE_EIGEN -DCPU_ONLY
 
 # boost
-LOCAL_LDLIBS += -llog -L$(LOCAL_PATH)/../../boost/lib/
+LOCAL_LDLIBS += -lm -llog -L$(LOCAL_PATH)/../../Boost-for-Android/build/lib/
 LOCAL_LDLIBS += -lboost_random-gcc-mt-1_55 -lboost_math_tr1-gcc-mt-1_55
 
-# LOCAL_ARM_MODE  := arm
+LOCAL_ARM_MODE := arm
+ifeq ($(TARGET_ARCH_ABI), armeabi-v7a)
+LOCAL_ARM_NEON := true
+endif
 
 include $(BUILD_SHARED_LIBRARY)
 
 #-----------------------------------------------------------------------------
-# include $(CLEAR_VARS)
-# LOCAL_MODULE := mira-cnn
+include $(CLEAR_VARS)
+LOCAL_MODULE := mira-cnn
 
-# LOCAL_SRC_FILES := mira-cnn.cpp
-# LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 $(LOCAL_PATH)/caffe/include \
-# $(LOCAL_PATH)/../../boost/include/boost-1_55 \
-# $(LOCAL_PATH)/../../opencv/jni/include
+LOCAL_SRC_FILES := mira-cnn.cpp
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 $(LOCAL_PATH)/caffe/include \
+$(LOCAL_PATH)/../../Boost-for-Android/build/include/boost-1_55 \
+$(LOCAL_PATH)/../../opencv/jni/include
 
 # LOCAL_STATIC_LIBRARIES += caffe
-# LOCAL_SHARED_LIBRARIES := caffe
-# LOCAL_LDLIBS := -llog
-# LOCAL_CPPFLAGS += -fexceptions -frtti -std=c++11 -DUSE_EIGEN -DCPU_ONLY
+LOCAL_SHARED_LIBRARIES := caffe
+LOCAL_LDLIBS := -lm -llog
+LOCAL_CPPFLAGS += -fexceptions -frtti -std=c++11 -DUSE_EIGEN -DCPU_ONLY
 
 # LOCAL_ARM_MODE  := arm
 
-# include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)

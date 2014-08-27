@@ -49,8 +49,11 @@ def build_protobuf():
 
 
 def build_boost():
-    # TODO: build boost from https://github.com/MysticTreeGames/Boost-for-Android
-    pass
+    if not os.path.isdir('Boost-for-Android/build'):
+        os.chdir('Boost-for-Android')
+        call(['./build-android.sh', NDK_PATH, '--boost=1.55.0', '--with-libraries=math,random'])
+        os.chdir(WD)
+
 
 def build_caffe():
     os.chdir('caffe-mobile')

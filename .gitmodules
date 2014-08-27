@@ -2,3 +2,6 @@
 	path = caffe-mobile/jni/caffe
 	url = git@github.com:sh1r0/caffe.git
 	branch = image_from_memory
+[submodule "Boost-for-Android"]
+	path = Boost-for-Android
+	url = git@github.com:sh1r0/Boost-for-Android.git
