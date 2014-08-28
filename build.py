@@ -7,8 +7,8 @@ from distutils.dir_util import copy_tree
 
 
 NDK_PATH = '/home/shiro/android-ndk-r9'
-PROJECT_LIB_PATH = '/home/shiro/MiRA-CNN/libs'
-WD = ''
+PROJECT_LIB_PATH = '/home/shiro/MiRA-CNN/libs' # optional, android project path
+BUILD_DIR = ''
 
 PROTOBUF_URL = 'https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2'
 EIGEN_URL = 'http://bitbucket.org/eigen/eigen/get/3.2.2.tar.bz2'
@@ -45,29 +45,31 @@ def build_protobuf():
     os.chdir('protobuf')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
     call(['ndk-build'])
-    os.chdir(WD)
+    os.chdir(BUILD_DIR)
 
 
 def build_boost():
     if not os.path.isdir('Boost-for-Android/build'):
         os.chdir('Boost-for-Android')
         call(['./build-android.sh', NDK_PATH, '--boost=1.55.0', '--with-libraries=math,random'])
-        os.chdir(WD)
+        os.chdir(BUILD_DIR)
 
 
 def build_caffe():
     os.chdir('caffe-mobile')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
     call(['ndk-build'])
-    copy_tree("libs/", PROJECT_LIB_PATH);
-    os.chdir(WD)
+    if PROJECT_LIB_PATH:
+        copy_tree("libs/", PROJECT_LIB_PATH)
+    os.chdir(BUILD_DIR)
 
 
 def main():
     os.environ['PATH'] += os.pathsep + NDK_PATH
 
-    global WD
-    WD = os.getcwd()
+    global BUILD_DIR
+    BUILD_DIR = os.path.dirname(__file__)
+    os.chdir(BUILD_DIR)
 
     setup()
 
