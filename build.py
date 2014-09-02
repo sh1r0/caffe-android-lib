@@ -68,7 +68,7 @@ def main():
     os.environ['PATH'] += os.pathsep + NDK_PATH
 
     global BUILD_DIR
-    BUILD_DIR = os.path.dirname(__file__)
+    BUILD_DIR = os.path.dirname(os.path.abspath(__file__))
     os.chdir(BUILD_DIR)
 
     setup()
