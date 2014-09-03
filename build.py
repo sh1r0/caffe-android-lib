@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 
 import os
+import sys
+import argparse
 import shutil
 from subprocess import call
 from distutils.dir_util import copy_tree
 
 
-NDK_PATH = '/home/shiro/android-ndk-r9'
-PROJECT_LIB_PATH = '/home/shiro/MiRA-CNN/libs' # optional, android project path
-BUILD_DIR = ''
+NDK_PATH = None
+PROJECT_LIB = None
+BUILD_DIR = None
 
 PROTOBUF_URL = 'https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2'
 EIGEN_URL = 'http://bitbucket.org/eigen/eigen/get/3.2.2.tar.bz2'
@@ -59,13 +61,31 @@ def build_caffe():
     os.chdir('caffe-mobile')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
     call(['ndk-build'])
-    if PROJECT_LIB_PATH:
-        copy_tree("libs/", PROJECT_LIB_PATH)
+    if PROJECT_LIB:
+        copy_tree("libs/", PROJECT_LIB)
     os.chdir(BUILD_DIR)
 
 
-def main():
+def main(argv):
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "ndk_path",
+        help="path to your android ndk"
+    )
+    parser.add_argument(
+        "-L",
+        "--project_lib",
+        default="",
+        help="path to the lib directory of your android project"
+    )
+    args = parser.parse_args()
+
+    global NDK_PATH
+    NDK_PATH = args.ndk_path
     os.environ['PATH'] += os.pathsep + NDK_PATH
+
+    global PROJECT_LIB
+    PROJECT_LIB = args.project_lib if args.project_lib else None
 
     global BUILD_DIR
     BUILD_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -79,4 +99,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

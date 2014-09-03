@@ -6,8 +6,7 @@ Porting [caffe](https://github.com/BVLC/caffe) to android platform for running c
 ## Usage
 ```
 git clone --recursive https://github.com/sh1r0/mira-cnn-mobile.git
-(specify your NDK_PATH, PROJECT_LIB_PATH in build.py)
-./build.py
+./build.py $(NDK_PATH)
 ```
 
 ## Optional
