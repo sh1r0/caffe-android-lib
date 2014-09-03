@@ -19,7 +19,7 @@ def setup():
     # protobuf
     if not os.path.isfile('protobuf/jni/configure'):
         if not os.path.exists('protobuf-2.5.0.tar.bz2'):
-            call(['wget', PROTOBUF_URL])
+            call(['curl', '-O', PROTOBUF_URL])
         call(['tar', 'jxf', 'protobuf-2.5.0.tar.bz2'])
         for c in os.listdir('protobuf-2.5.0'):
             shutil.move(os.path.join('protobuf-2.5.0', c), 'protobuf/jni')
@@ -28,14 +28,14 @@ def setup():
     # eigen
     if not os.path.isdir('eigen3'):
         if not os.path.exists('3.2.2.tar.bz2'):
-            call(['wget', EIGEN_URL])
+            call(['curl', '-LO', EIGEN_URL])
         call(['tar', 'jxf', '3.2.2.tar.bz2'])
         os.rename('eigen-eigen-1306d75b4a21', 'eigen3')
 
     # opencv
     if not os.path.isdir('opencv'):
         if not os.path.exists('OpenCV-2.4.9-android-sdk.zip'):
-            call(['wget', '-O', 'OpenCV-2.4.9-android-sdk.zip', OPENCV_URL])
+            call(['curl', '-L', '-o', 'OpenCV-2.4.9-android-sdk.zip', OPENCV_URL])
         call(['unzip', '-u', 'OpenCV-2.4.9-android-sdk.zip'])
         shutil.move('OpenCV-2.4.9-android-sdk/sdk/native', 'opencv')
         shutil.rmtree('OpenCV-2.4.9-android-sdk')
