@@ -20,14 +20,21 @@ extern "C" {
 int getTimeSec();
 
 jstring JNIEXPORT JNICALL
-Java_com_sh1r0_cnn_MainActivity_runTest(JNIEnv* env, jobject thiz)
+Java_com_sh1r0_cnn_caffe_1android_1demo_runTest(JNIEnv* env, jobject thiz, jstring imgPath)
 {
     caffe::LogMessage::Enable(true);
+
+    const char *img_path = env->GetStringUTFChars(imgPath, 0);
+    // /sdcard/cnn_test/images/cat.jpg
+
     int t_s = getTimeSec();
-    int result = test(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"), string("/sdcard/cnn_test/images/cat.jpg"));
+    int result = test(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"), string(img_path));
     int t_e = getTimeSec();
+
     LOGD("time elapsed: %d s", t_e - t_s);
     LOGD("result: %d", result);
+
+    env->ReleaseStringUTFChars(imgPath, img_path);
 
     return env->NewStringUTF("OK!");
 }
