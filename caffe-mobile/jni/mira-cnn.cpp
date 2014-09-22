@@ -4,7 +4,7 @@
 #include <string>
 
 #include "caffe/caffe.hpp"
-#include "test.hpp"
+#include "imagenet_test.hpp"
 
 #define  LOG_TAG    "MiRA-CNN"
 #define  LOGV(...)  __android_log_print(ANDROID_LOG_VERBOSE,LOG_TAG, __VA_ARGS__)
@@ -17,26 +17,34 @@
 extern "C" {
 #endif
 
+caffe::ImageNet *image_net;
+
 int getTimeSec();
 
-jstring JNIEXPORT JNICALL
-Java_com_sh1r0_cnn_caffe_1android_1demo_runTest(JNIEnv* env, jobject thiz, jstring imgPath)
+jint JNIEXPORT JNICALL
+Java_com_sh1r0_caffe_1android_1demo_MainActivity_initTest(JNIEnv* env, jobject thiz)
+{
+    caffe::LogMessage::Enable(true);
+    image_net = new caffe::ImageNet(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"));
+
+    return 0;
+}
+
+jint JNIEXPORT JNICALL
+Java_com_sh1r0_caffe_1android_1demo_MainActivity_runTest(JNIEnv* env, jobject thiz, jstring imgPath)
 {
     caffe::LogMessage::Enable(true);
 
     const char *img_path = env->GetStringUTFChars(imgPath, 0);
     // /sdcard/cnn_test/images/cat.jpg
 
-    int t_s = getTimeSec();
-    int result = test(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"), string(img_path));
-    int t_e = getTimeSec();
+    int result = image_net->test(string(img_path));
 
-    LOGD("time elapsed: %d s", t_e - t_s);
     LOGD("result: %d", result);
 
     env->ReleaseStringUTFChars(imgPath, img_path);
 
-    return env->NewStringUTF("OK!");
+    return result;
 }
 
 int getTimeSec() {
@@ -49,7 +57,7 @@ JavaVM *g_jvm = NULL;
 jobject g_obj = NULL;
 
 void JNIEXPORT JNICALL
-Java_com_sh1r0_cnn_MainActivity_setJNIEnv(JNIEnv* env, jobject obj)
+Java_com_sh1r0_caffe_1android_1demo_MainActivity_MainActivity_setJNIEnv(JNIEnv* env, jobject obj)
 {
     env->GetJavaVM(&g_jvm);
     g_obj = env->NewGlobalRef(obj);

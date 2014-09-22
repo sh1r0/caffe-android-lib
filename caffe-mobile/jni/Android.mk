@@ -88,7 +88,7 @@ include $(BUILD_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := mira-cnn
 
-LOCAL_SRC_FILES := mira-cnn.cpp
+LOCAL_SRC_FILES := mira-cnn.cpp imagenet_test.cpp
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 $(LOCAL_PATH)/caffe/include \
 $(LOCAL_PATH)/../../Boost-for-Android/build/include/boost-1_55 \
 $(LOCAL_PATH)/../../opencv/jni/include
