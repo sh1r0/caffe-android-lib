@@ -15,3 +15,5 @@ protobuf/obj/
 caffe-mobile/obj/
 caffe-mobile/libs/
 
+cnn_test/caffe_reference_imagenet_model
+cnn_test/imagenet_mean.binaryproto

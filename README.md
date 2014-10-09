@@ -10,6 +10,12 @@ git clone --recursive https://github.com/sh1r0/mira-cnn-mobile.git
 ```
 
 ## Usage
+- put required stuff into your device
+
+	```
+	./get_model.py
+	adb push cnn_test/ /sdcard/cnn_test/
+	```
 - copy `caffe-mobile/libs/armeabi-v7a/*.so` to your jni lib directory
 - in your main activity
 
