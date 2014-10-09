@@ -3,11 +3,40 @@ MiRA-CNN-Mobile
 ## Goal
 Porting [caffe](https://github.com/BVLC/caffe) to android platform for running convolutional neural network prediction on mobile
 
-## Usage
+## Build
 ```
 git clone --recursive https://github.com/sh1r0/mira-cnn-mobile.git
 ./build.py $(NDK_PATH)
 ```
+
+## Usage
+- copy `caffe-mobile/libs/armeabi-v7a/*.so` to your jni lib directory
+- in your main activity
+
+	```java
+	static {
+		System.loadLibrary("caffe");
+		System.loadLibrary("mira-cnn");
+	}
+	```
+- create `ImageNet.java`
+
+	```java
+	package com.sh1r0.caffe_android_demo;
+
+	public class ImageNet {
+		public native int initTest();
+		public native int runTest(String imgPath);
+	}
+	```
+- call native methods
+
+	```java
+	ImageNet imageNet = new ImageNet()
+	imageNet.initTest(); // init once
+	...
+	imageNet.runTest(imgPath);
+	```
 
 ## Optional
 `.envrc` files are for [direnv](http://direnv.net/)
