@@ -5,6 +5,7 @@
 #include "caffe/caffe.hpp"
 
 using std::string;
+using std::vector;
 
 namespace caffe {
 
@@ -15,6 +16,8 @@ public:
 	~ImageNet();
 
 	int test(string img_path);
+
+	vector<int> predict_top_k(string img_path, int k=3);
 
 private:
 	Net<float> *caffe_net;
