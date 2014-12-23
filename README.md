@@ -34,7 +34,8 @@ cd caffe-android-lib
 	package com.sh1r0.caffe_android_demo;
 
 	public class ImageNet {
-		public native int initTest();
+		public native void enableLog(boolean enabled);
+		public native int initTest(String modelPath, String weightsPath);
 		public native int runTest(String imgPath);
 	}
 	```

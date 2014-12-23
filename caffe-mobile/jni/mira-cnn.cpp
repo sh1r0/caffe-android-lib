@@ -28,10 +28,13 @@ Java_com_sh1r0_caffe_1android_1demo_ImageNet_enableLog(JNIEnv* env, jobject thiz
 }
 
 jint JNIEXPORT JNICALL
-Java_com_sh1r0_caffe_1android_1demo_ImageNet_initTest(JNIEnv* env, jobject thiz)
+Java_com_sh1r0_caffe_1android_1demo_ImageNet_initTest(JNIEnv* env, jobject thiz, jstring modelPath, jstring weightsPath)
 {
-    image_net = new caffe::ImageNet(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"));
-
+    const char *model_path = env->GetStringUTFChars(modelPath, 0);
+    const char *weights_path = env->GetStringUTFChars(weightsPath, 0);
+    image_net = new caffe::ImageNet(string(model_path), string(weights_path));
+    env->ReleaseStringUTFChars(modelPath, model_path);
+    env->ReleaseStringUTFChars(weightsPath, weights_path);
     return 0;
 }
 
