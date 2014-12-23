@@ -2,16 +2,17 @@
 #include "imagenet_test.hpp"
 
 using std::string;
-using std::shared_ptr;
 using std::static_pointer_cast;
 using std::clock;
 using std::clock_t;
 
 using caffe::Blob;
 using caffe::Caffe;
+using caffe::Datum;
 using caffe::Net;
+using caffe::shared_ptr;
 using caffe::vector;
-using caffe::ImageDataLayer;
+using caffe::MemoryDataLayer;
 
 namespace caffe {
 
@@ -22,7 +23,7 @@ vector<size_t> ordered(vector<T> const& values) {
 
 	std::sort(
 		begin(indices), end(indices),
-		[&](size_t a, size_t b) { return values[a] < values[b]; }
+		[&](size_t a, size_t b) { return values[a] > values[b]; }
 	);
 	return indices;
 }
@@ -47,53 +48,55 @@ ImageNet::~ImageNet() {
 }
 
 int ImageNet::test(string img_path) {
-	float loss;
-	cv::Mat image = cv::imread(img_path.c_str());
-	vector<cv::Mat> images(1, image);
-	vector<int> labels(1, 0);
-	const shared_ptr<ImageDataLayer<float> > image_data_layer =
-		static_pointer_cast<ImageDataLayer<float>>(
-			caffe_net->layer_by_name("data"));
-	image_data_layer->AddImagesAndLabels(images, labels);
-	vector<Blob<float>* > dummy_bottom_vec;
+	CHECK(caffe_net != NULL);
 
+	Datum datum;
+	CHECK(ReadImageToDatum(img_path, 0, 256, 256, true, &datum));
+	const shared_ptr<MemoryDataLayer<float>> memory_data_layer =
+		static_pointer_cast<MemoryDataLayer<float>>(
+			caffe_net->layer_by_name("data"));
+	memory_data_layer->AddDatumVector(vector<Datum>({datum}));
+
+	vector<Blob<float>* > dummy_bottom_vec;
+	float loss;
 	clock_t t_start = clock();
 	const vector<Blob<float>*>& result = caffe_net->Forward(dummy_bottom_vec, &loss);
 	clock_t t_end = clock();
 	LOG(DEBUG) << "Prediction time: " << 1000.0 * (t_end - t_start) / CLOCKS_PER_SEC << " ms.";
 
-	LOG(INFO)<< "Output result size: "<< result.size();
-
 	const float* argmaxs = result[1]->cpu_data();
-	for (int i = 0; i < result[1]->num(); ++i) {
-		LOG(INFO)<< " Image: "<< i << " class:" << argmaxs[i];
+	for (int i = 0; i < result[1]->num(); i++) {
+		for (int j = 0; j < result[1]->height(); j++) {
+			LOG(INFO) << " Image: "<< i << " class:"
+			          << argmaxs[i*result[1]->height() + j];
+		}
 	}
 
 	return argmaxs[0];
 }
 
 vector<int> ImageNet::predict_top_k(string img_path, int k) {
-	float loss;
-	cv::Mat image = cv::imread(img_path.c_str());
-	vector<cv::Mat> images(1, image);
-	vector<int> labels(1, 0);
-	const shared_ptr<ImageDataLayer<float> > image_data_layer =
-		static_pointer_cast<ImageDataLayer<float>>(
-			caffe_net->layer_by_name("data"));
-	image_data_layer->AddImagesAndLabels(images, labels);
-	vector<Blob<float>* > dummy_bottom_vec;
+	CHECK(caffe_net != NULL);
 
+	Datum datum;
+	CHECK(ReadImageToDatum(img_path, 0, 256, 256, true, &datum));
+	const shared_ptr<MemoryDataLayer<float>> memory_data_layer =
+		static_pointer_cast<MemoryDataLayer<float>>(
+			caffe_net->layer_by_name("data"));
+	memory_data_layer->AddDatumVector(vector<Datum>({datum}));
+
+	float loss;
+	vector<Blob<float>* > dummy_bottom_vec;
 	clock_t t_start = clock();
 	const vector<Blob<float>*>& result = caffe_net->Forward(dummy_bottom_vec, &loss);
 	clock_t t_end = clock();
 	LOG(DEBUG) << "Prediction time: " << 1000.0 * (t_end - t_start) / CLOCKS_PER_SEC << " ms.";
 
-	LOG(INFO)<< "Output result size: "<< result.size();
-
-	const vector<float> probs = vector<float>(result[1]->cpu_data(), result[1]->cpu_data() + result[1]->count() - 1);
+	const vector<float> probs = vector<float>(result[1]->cpu_data(), result[1]->cpu_data() + result[1]->count());
+	CHECK_LE(k, probs.size());
 	vector<size_t> sorted_index = ordered(probs);
 
-	return vector<int>(sorted_index.begin(), sorted_index.begin() + k - 1);
+	return vector<int>(sorted_index.begin(), sorted_index.begin() + k);
 }
 
 } // namespace caffe

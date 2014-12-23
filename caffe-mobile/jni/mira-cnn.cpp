@@ -21,10 +21,15 @@ caffe::ImageNet *image_net;
 
 int getTimeSec();
 
+void JNIEXPORT JNICALL
+Java_com_sh1r0_caffe_1android_1demo_ImageNet_enableLog(JNIEnv* env, jobject thiz, jboolean enabled)
+{
+    caffe::LogMessage::Enable(enabled != JNI_FALSE);
+}
+
 jint JNIEXPORT JNICALL
 Java_com_sh1r0_caffe_1android_1demo_ImageNet_initTest(JNIEnv* env, jobject thiz)
 {
-    caffe::LogMessage::Enable(true);
     image_net = new caffe::ImageNet(string("/sdcard/cnn_test/model.prototxt"), string("/sdcard/cnn_test/caffe_reference_imagenet_model"));
 
     return 0;
@@ -33,18 +38,13 @@ Java_com_sh1r0_caffe_1android_1demo_ImageNet_initTest(JNIEnv* env, jobject thiz)
 jint JNIEXPORT JNICALL
 Java_com_sh1r0_caffe_1android_1demo_ImageNet_runTest(JNIEnv* env, jobject thiz, jstring imgPath)
 {
-    caffe::LogMessage::Enable(true);
-
     const char *img_path = env->GetStringUTFChars(imgPath, 0);
-    // /sdcard/cnn_test/images/cat.jpg
-
-    int result = image_net->test(string(img_path));
-
-    LOGD("result: %d", result);
+    caffe::vector<int> top_k = image_net->predict_top_k(string(img_path), 3);
+    LOGD("top-1 result: %d", top_k[0]);
 
     env->ReleaseStringUTFChars(imgPath, img_path);
 
-    return result;
+    return top_k[0];
 }
 
 int getTimeSec() {
@@ -74,6 +74,23 @@ jint JNIEXPORT JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
     }
 
     return JNI_VERSION_1_6;
+}
+
+int main(int argc, char const *argv[])
+{
+    string usage("usage: main <model> <weights> <img>");
+    if (argc < 4) {
+        std::cerr << usage << std::endl;
+        return 1;
+    }
+
+    caffe::LogMessage::Enable(true); // enable logging
+    image_net = new caffe::ImageNet(string(argv[1]), string(argv[2]));
+    caffe::vector<int> top_3 = image_net->predict_top_k(string(argv[3]));
+    for (auto k : top_3) {
+        std::cout << k << std::endl;
+    }
+    return 0;
 }
 
 #ifdef __cplusplus

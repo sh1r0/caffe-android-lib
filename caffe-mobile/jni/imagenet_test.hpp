@@ -5,7 +5,6 @@
 #include "caffe/caffe.hpp"
 
 using std::string;
-using std::vector;
 
 namespace caffe {
 

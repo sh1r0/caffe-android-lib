@@ -1,11 +1,11 @@
-MiRA-CNN-Mobile
+Caffe-Android-Lib
 ===============
 ## Goal
-Porting [caffe](https://github.com/BVLC/caffe) to android platform for running convolutional neural network prediction on mobile
+Porting [caffe](https://github.com/BVLC/caffe) to android platform
 
 ## Build
 ```
-git clone --recursive https://github.com/sh1r0/mira-cnn-mobile.git
+git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
 ./build.py $(NDK_PATH)
 ```
 
@@ -14,7 +14,8 @@ git clone --recursive https://github.com/sh1r0/mira-cnn-mobile.git
 
 	```
 	./get_model.py
-	adb push cnn_test/ /sdcard/cnn_test/
+	adb push caffe-mobile/jni/caffe/data/ilsvrc12/imagenet_mean.binaryproto /sdcard/caffe_mobile/
+	adb push caffe-mobile/jni/caffe/models/bvlc_reference_caffenet/ /sdcard/caffe_mobile/bvlc_reference_caffenet/
 	```
 - copy `caffe-mobile/libs/armeabi-v7a/*.so` to your jni lib directory
 - in your main activity
