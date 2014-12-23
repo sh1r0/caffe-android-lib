@@ -6,6 +6,7 @@ Porting [caffe](https://github.com/BVLC/caffe) to android platform
 ## Build
 ```
 git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
+cd caffe-android-lib
 ./build.py $(NDK_PATH)
 ```
 
@@ -14,6 +15,7 @@ git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
 
 	```
 	./get_model.py
+	adb shell mkdir -p /sdcard/caffe_mobile/
 	adb push caffe-mobile/jni/caffe/data/ilsvrc12/imagenet_mean.binaryproto /sdcard/caffe_mobile/
 	adb push caffe-mobile/jni/caffe/models/bvlc_reference_caffenet/ /sdcard/caffe_mobile/bvlc_reference_caffenet/
 	```
