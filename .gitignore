@@ -1,4 +1,4 @@
-3.2.2.tar.bz2
+3.2.4.tar.bz2
 protobuf-2.5.0.tar.bz2
 OpenCV-2.4.9-android-sdk.zip
 
@@ -14,6 +14,3 @@ protobuf/obj/
 
 caffe-mobile/obj/
 caffe-mobile/libs/
-
-cnn_test/caffe_reference_imagenet_model
-cnn_test/imagenet_mean.binaryproto

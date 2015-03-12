@@ -12,35 +12,46 @@ NDK_PATH = None
 PROJECT_LIB = None
 BUILD_DIR = None
 
-PROTOBUF_URL = 'https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2'
-EIGEN_URL = 'http://bitbucket.org/eigen/eigen/get/3.2.2.tar.bz2'
-OPENCV_URL = 'http://sourceforge.net/projects/opencvlibrary/files/opencv-android/2.4.9/OpenCV-2.4.9-android-sdk.zip/download'
+PROTOBUF_VER = '2.5.0'
+PROTOBUF_ARCHIVE = 'protobuf-{0}.tar.bz2'.format(PROTOBUF_VER)
+PROTOBUF_URL = 'https://protobuf.googlecode.com/files/{0}'.format(PROTOBUF_ARCHIVE)
+PROTOBUF_DIR = 'protobuf-{0}'.format(PROTOBUF_VER)
+
+EIGEN_VER = '3.2.4'
+EIGEN_ARCHIVE = '{0}.tar.bz2'.format(EIGEN_VER)
+EIGEN_URL = 'http://bitbucket.org/eigen/eigen/get/{0}'.format(EIGEN_ARCHIVE)
+EIGEN_TEMP_DIR = 'eigen-eigen-10219c95fe65'
+
+OPENCV_VER = '2.4.9'
+OPENCV_ARCHIVE = 'OpenCV-{0}-android-sdk.zip'.format(OPENCV_VER)
+OPENCV_URL = 'http://sourceforge.net/projects/opencvlibrary/files/opencv-android/{0}/{1}/download'.format(OPENCV_VER, OPENCV_ARCHIVE)
+OPENCV_TEMP_DIR = 'OpenCV-{0}-android-sdk'.format(OPENCV_VER)
 
 
 def setup():
     # protobuf
     if not os.path.isfile('protobuf/jni/configure'):
-        if not os.path.exists('protobuf-2.5.0.tar.bz2'):
+        if not os.path.exists(PROTOBUF_ARCHIVE):
             call(['curl', '-O', PROTOBUF_URL])
-        call(['tar', 'jxf', 'protobuf-2.5.0.tar.bz2'])
-        for c in os.listdir('protobuf-2.5.0'):
-            shutil.move(os.path.join('protobuf-2.5.0', c), 'protobuf/jni')
-        os.rmdir('protobuf-2.5.0')
+        call(['tar', 'jxf', PROTOBUF_ARCHIVE])
+        for c in os.listdir(PROTOBUF_DIR):
+            shutil.move(os.path.join(PROTOBUF_DIR, c), 'protobuf/jni')
+        os.rmdir(PROTOBUF_DIR)
 
     # eigen
     if not os.path.isdir('eigen3'):
-        if not os.path.exists('3.2.2.tar.bz2'):
+        if not os.path.exists(EIGEN_ARCHIVE):
             call(['curl', '-LO', EIGEN_URL])
-        call(['tar', 'jxf', '3.2.2.tar.bz2'])
-        os.rename('eigen-eigen-1306d75b4a21', 'eigen3')
+        call(['tar', 'jxf', EIGEN_ARCHIVE])
+        os.rename(EIGEN_TEMP_DIR, 'eigen3')
 
     # opencv
     if not os.path.isdir('opencv'):
-        if not os.path.exists('OpenCV-2.4.9-android-sdk.zip'):
-            call(['curl', '-L', '-o', 'OpenCV-2.4.9-android-sdk.zip', OPENCV_URL])
-        call(['unzip', '-u', 'OpenCV-2.4.9-android-sdk.zip'])
-        shutil.move('OpenCV-2.4.9-android-sdk/sdk/native', 'opencv')
-        shutil.rmtree('OpenCV-2.4.9-android-sdk')
+        if not os.path.exists(OPENCV_ARCHIVE):
+            call(['curl', '-L', '-o', OPENCV_ARCHIVE, OPENCV_URL])
+        call(['unzip', '-u', OPENCV_ARCHIVE])
+        shutil.move('{0}/sdk/native'.format(OPENCV_TEMP_DIR), 'opencv')
+        shutil.rmtree(OPENCV_TEMP_DIR)
 
 
 def build_protobuf():
