@@ -16,7 +16,6 @@ cd caffe-android-lib
 	```
 	./get_model.py
 	adb shell mkdir -p /sdcard/caffe_mobile/
-	adb push caffe-mobile/jni/caffe/data/ilsvrc12/imagenet_mean.binaryproto /sdcard/caffe_mobile/
 	adb push caffe-mobile/jni/caffe/models/bvlc_reference_caffenet/ /sdcard/caffe_mobile/bvlc_reference_caffenet/
 	```
 - copy `caffe-mobile/libs/armeabi-v7a/*.so` to your jni lib directory
@@ -25,27 +24,27 @@ cd caffe-android-lib
 	```java
 	static {
 		System.loadLibrary("caffe");
-		System.loadLibrary("mira-cnn");
+		System.loadLibrary("caffe_jni");
 	}
 	```
-- create `ImageNet.java`
+- create `CaffeMobile.java`
 
 	```java
 	package com.sh1r0.caffe_android_demo;
 
-	public class ImageNet {
+	public class CaffeMobile {
 		public native void enableLog(boolean enabled);
-		public native int initTest(String modelPath, String weightsPath);
-		public native int runTest(String imgPath);
+		public native int loadModel(String modelPath, String weightsPath);
+		public native int predictImage(String imgPath);
 	}
 	```
 - call native methods
 
 	```java
-	ImageNet imageNet = new ImageNet()
-	imageNet.initTest(); // init once
+	CaffeMobile caffeMobile = new CaffeMobile();
+	caffeMobile.loadModel(modelPath, weightsPath); // init once
 	...
-	imageNet.runTest(imgPath);
+	caffeMobile.predictImage(imgPath);
 	```
 
 ## Optional

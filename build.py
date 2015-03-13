@@ -64,7 +64,7 @@ def build_protobuf():
 def build_boost():
     if not os.path.isdir('Boost-for-Android/build'):
         os.chdir('Boost-for-Android')
-        call(['./build-android.sh', NDK_PATH, '--boost=1.55.0', '--with-libraries=math,random,thread,system'])
+        call(['./build-android.sh', NDK_PATH, '--boost=1.55.0', '--with-libraries=date_time,math,random,thread,system'])
         os.chdir(BUILD_DIR)
 
 

@@ -1,5 +1,5 @@
 #include <string>
-#include "imagenet_test.hpp"
+#include "caffe_mobile.hpp"
 
 using std::string;
 using std::static_pointer_cast;
@@ -28,26 +28,25 @@ vector<size_t> ordered(vector<T> const& values) {
 	return indices;
 }
 
-ImageNet::ImageNet(string model_path, string weights_path) {
+CaffeMobile::CaffeMobile(string model_path, string weights_path) {
 	CHECK_GT(model_path.size(), 0) << "Need a model definition to score.";
 	CHECK_GT(weights_path.size(), 0) << "Need model weights to score.";
 
 	Caffe::set_mode(Caffe::CPU);
-	Caffe::set_phase(Caffe::TEST);
 
 	clock_t t_start = clock();
-	caffe_net = new Net<float>(model_path);
+	caffe_net = new Net<float>(model_path, caffe::TEST);
 	caffe_net->CopyTrainedLayersFrom(weights_path);
 	clock_t t_end = clock();
 	LOG(DEBUG) << "Loading time: " << 1000.0 * (t_end - t_start) / CLOCKS_PER_SEC << " ms.";
 }
 
-ImageNet::~ImageNet() {
+CaffeMobile::~CaffeMobile() {
 	free(caffe_net);
 	caffe_net = NULL;
 }
 
-int ImageNet::test(string img_path) {
+int CaffeMobile::test(string img_path) {
 	CHECK(caffe_net != NULL);
 
 	Datum datum;
@@ -75,7 +74,7 @@ int ImageNet::test(string img_path) {
 	return argmaxs[0];
 }
 
-vector<int> ImageNet::predict_top_k(string img_path, int k) {
+vector<int> CaffeMobile::predict_top_k(string img_path, int k) {
 	CHECK(caffe_net != NULL);
 
 	Datum datum;

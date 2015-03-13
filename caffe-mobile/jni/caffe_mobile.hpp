@@ -1,5 +1,5 @@
-#ifndef IMAGENET_TEST_HPP_
-#define IMAGENET_TEST_HPP_
+#ifndef CAFFE_MOBILE_HPP_
+#define CAFFE_MOBILE_HPP_
 
 #include <string>
 #include "caffe/caffe.hpp"
@@ -8,11 +8,11 @@ using std::string;
 
 namespace caffe {
 
-class ImageNet
+class CaffeMobile
 {
 public:
-	ImageNet(string model_path, string weights_path);
-	~ImageNet();
+	CaffeMobile(string model_path, string weights_path);
+	~CaffeMobile();
 
 	int test(string img_path);
 

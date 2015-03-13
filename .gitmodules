@@ -1,6 +1,8 @@
 [submodule "caffe-mobile/jni/caffe"]
 	path = caffe-mobile/jni/caffe
 	url = https://github.com/sh1r0/caffe.git
+	branch = mobile
 [submodule "Boost-for-Android"]
 	path = Boost-for-Android
 	url = https://github.com/sh1r0/Boost-for-Android.git
+	branch = master
