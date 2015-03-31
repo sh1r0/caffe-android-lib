@@ -67,6 +67,7 @@ src/caffe/layers/tanh_layer.cpp \
 src/caffe/layers/threshold_layer.cpp \
 src/caffe/layers/window_data_layer.cpp \
 src/caffe/net.cpp \
+src/caffe/solver.cpp \
 src/caffe/syncedmem.cpp \
 src/caffe/util/benchmark.cpp \
 src/caffe/util/im2col.cpp \
