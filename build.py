@@ -11,6 +11,7 @@ from distutils.dir_util import copy_tree
 NDK_PATH = None
 PROJECT_LIB = None
 BUILD_DIR = None
+ndk_build = None
 
 PROTOBUF_VER = '2.5.0'
 PROTOBUF_ARCHIVE = 'protobuf-{0}.tar.bz2'.format(PROTOBUF_VER)
@@ -54,10 +55,17 @@ def setup():
         shutil.rmtree(OPENCV_TEMP_DIR)
 
 
+def setup_ndk_build(jobs=1):
+    def ndk_build():
+        call(['ndk-build', '-j', str(jobs)])
+
+    return ndk_build
+
+
 def build_protobuf():
     os.chdir('protobuf')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
-    call(['ndk-build'])
+    ndk_build()
     os.chdir(BUILD_DIR)
 
 
@@ -71,7 +79,7 @@ def build_boost():
 def build_caffe():
     os.chdir('caffe-mobile')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
-    call(['ndk-build'])
+    ndk_build()
     if PROJECT_LIB:
         copy_tree("libs/", PROJECT_LIB)
     os.chdir(BUILD_DIR)
@@ -89,6 +97,13 @@ def main(argv):
         default="",
         help="path to the lib directory of your android project"
     )
+    parser.add_argument(
+        "-j",
+        "--jobs",
+        type=int,
+        default=1,
+        help="allow N jobs at once, for `ndk-build`"
+    )
     args = parser.parse_args()
 
     global NDK_PATH
@@ -103,6 +118,9 @@ def main(argv):
     os.chdir(BUILD_DIR)
 
     setup()
+
+    global ndk_build
+    ndk_build = setup_ndk_build(jobs=args.jobs)
 
     build_protobuf()
     build_boost()
