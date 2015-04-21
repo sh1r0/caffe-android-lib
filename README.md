@@ -42,7 +42,8 @@ cd caffe-android-lib
 
 	```java
 	CaffeMobile caffeMobile = new CaffeMobile();
-	caffeMobile.loadModel(modelPath, weightsPath); // init once
+	caffeMobile.enableLog(true);  // optional, enable native logging
+	caffeMobile.loadModel(modelPath, weightsPath);  // init once
 	...
 	caffeMobile.predictImage(imgPath);
 	```

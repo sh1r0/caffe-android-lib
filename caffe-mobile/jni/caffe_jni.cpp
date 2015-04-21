@@ -23,7 +23,7 @@ int getTimeSec();
 
 static int pfd[2];
 static pthread_t thr;
-static const char *tag = "myapp";
+static const char *tag = "stderr";
 
 static void *thread_func(void*) {
     ssize_t rdsz;
@@ -46,7 +46,7 @@ static int start_logger() {
     dup2(pfd[1], 2);
 
     /* spawn the logging thread */
-    if(pthread_create(&thr, 0, thread_func, 0) == -1)
+    if (pthread_create(&thr, 0, thread_func, 0) == -1)
         return -1;
     pthread_detach(thr);
     return 0;
