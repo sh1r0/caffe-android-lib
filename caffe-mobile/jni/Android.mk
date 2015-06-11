@@ -94,7 +94,8 @@ LOCAL_LDLIBS += -lboost_random-gcc-mt-1_55 \
                 -lboost_math_tr1-gcc-mt-1_55 \
                 -lboost_system-gcc-mt-1_55 \
                 -lboost_thread-gcc-mt-1_55 \
-                -lboost_date_time-gcc-mt-1_55
+                -lboost_date_time-gcc-mt-1_55 \
+                -lboost_atomic-gcc-mt-1_55
 
 LOCAL_ARM_MODE := arm
 ifeq ($(TARGET_ARCH_ABI), armeabi-v7a)
