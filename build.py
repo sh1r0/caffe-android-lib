@@ -8,11 +8,6 @@ from subprocess import call
 from distutils.dir_util import copy_tree
 
 
-NDK_PATH = None
-PROJECT_LIB = None
-BUILD_DIR = None
-ndk_build = None
-
 PROTOBUF_VER = '2.5.0'
 PROTOBUF_ARCHIVE = 'protobuf-{0}.tar.bz2'.format(PROTOBUF_VER)
 PROTOBUF_URL = 'https://protobuf.googlecode.com/files/{0}'.format(PROTOBUF_ARCHIVE)
@@ -62,27 +57,30 @@ def setup_ndk_build(jobs=1):
     return ndk_build
 
 
-def build_protobuf():
+def build_protobuf(ndk_build):
+    p_dir = os.getcwdu()
     os.chdir('protobuf')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
     ndk_build()
-    os.chdir(BUILD_DIR)
+    os.chdir(p_dir)
 
 
-def build_boost():
+def build_boost(ndk_path):
     if not os.path.isdir('Boost-for-Android/build'):
+        p_dir = os.getcwdu()
         os.chdir('Boost-for-Android')
-        call(['./build-android.sh', NDK_PATH, '--boost=1.55.0', '--with-libraries=date_time,math,random,thread,system'])
-        os.chdir(BUILD_DIR)
+        call(['./build-android.sh', ndk_path, '--boost=1.55.0', '--with-libraries=date_time,math,random,thread,system'])
+        os.chdir(p_dir)
 
 
-def build_caffe():
+def build_caffe(ndk_build, project_lib=None):
+    p_dir = os.getcwdu()
     os.chdir('caffe-mobile')
     os.environ['NDK_PROJECT_PATH'] = os.getcwd()
     ndk_build()
-    if PROJECT_LIB:
-        copy_tree("libs/", PROJECT_LIB)
-    os.chdir(BUILD_DIR)
+    if project_lib:
+        copy_tree("libs/", project_lib)
+    os.chdir(p_dir)
 
 
 def main(argv):
@@ -106,25 +104,16 @@ def main(argv):
     )
     args = parser.parse_args()
 
-    global NDK_PATH
-    NDK_PATH = args.ndk_path
-    os.environ['PATH'] += os.pathsep + NDK_PATH
-
-    global PROJECT_LIB
-    PROJECT_LIB = args.project_lib if args.project_lib else None
-
-    global BUILD_DIR
-    BUILD_DIR = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(BUILD_DIR)
+    os.environ['PATH'] += os.pathsep + args.ndk_path
 
     setup()
+    build_dir_ = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(build_dir_)
+    ndk_build_ = setup_ndk_build(jobs=args.jobs)
 
-    global ndk_build
-    ndk_build = setup_ndk_build(jobs=args.jobs)
-
-    build_protobuf()
-    build_boost()
-    build_caffe()
+    build_protobuf(ndk_build_)
+    build_boost(args.ndk_path)
+    build_caffe(ndk_build_, project_lib=args.project_lib)
 
 
 if __name__ == '__main__':
