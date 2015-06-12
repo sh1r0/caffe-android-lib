@@ -82,20 +82,12 @@ LOCAL_SRC_FILES := $(PRORO_CC) \
     $(foreach caffe_cxx_src,$(CAFFE_CXX_SRCS),caffe/$(caffe_cxx_src))
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 \
     $(LOCAL_PATH)/caffe/include $(LOCAL_PATH)/caffe/include/caffe/proto \
-    $(LOCAL_PATH)/../../Boost-for-Android/build/include/boost-1_55 \
     $(LOCAL_PATH)/../../opencv/jni/include
 
 LOCAL_STATIC_LIBRARIES += protobuf
 LOCAL_CPPFLAGS += -pthread -fPIC -fexceptions -frtti -std=c++11 -DUSE_EIGEN -DCPU_ONLY
 
-# boost
-LOCAL_LDLIBS += -lm -llog -L$(LOCAL_PATH)/../../Boost-for-Android/build/lib/
-LOCAL_LDLIBS += -lboost_random-gcc-mt-1_55 \
-                -lboost_math_tr1-gcc-mt-1_55 \
-                -lboost_system-gcc-mt-1_55 \
-                -lboost_thread-gcc-mt-1_55 \
-                -lboost_date_time-gcc-mt-1_55 \
-                -lboost_atomic-gcc-mt-1_55
+LOCAL_LDLIBS += -lm -llog
 
 LOCAL_ARM_MODE := arm
 ifeq ($(TARGET_ARCH_ABI), armeabi-v7a)
@@ -110,8 +102,7 @@ LOCAL_MODULE := caffe_jni
 
 LOCAL_SRC_FILES := caffe_jni.cpp caffe_mobile.cpp
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../eigen3 $(LOCAL_PATH)/caffe/include \
-$(LOCAL_PATH)/../../Boost-for-Android/build/include/boost-1_55 \
-$(LOCAL_PATH)/../../opencv/jni/include
+                    $(LOCAL_PATH)/../../opencv/jni/include
 
 # LOCAL_STATIC_LIBRARIES += caffe
 LOCAL_SHARED_LIBRARIES := caffe

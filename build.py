@@ -65,14 +65,6 @@ def build_protobuf(ndk_build):
     os.chdir(p_dir)
 
 
-def build_boost(ndk_path):
-    if not os.path.isdir('Boost-for-Android/build'):
-        p_dir = os.getcwdu()
-        os.chdir('Boost-for-Android')
-        call(['./build-android.sh', ndk_path, '--boost=1.55.0', '--with-libraries=date_time,math,random,thread,system'])
-        os.chdir(p_dir)
-
-
 def build_caffe(ndk_build, project_lib=None):
     p_dir = os.getcwdu()
     os.chdir('caffe-mobile')
@@ -112,7 +104,6 @@ def main(argv):
     ndk_build_ = setup_ndk_build(jobs=args.jobs)
 
     build_protobuf(ndk_build_)
-    build_boost(args.ndk_path)
     build_caffe(ndk_build_, project_lib=args.project_lib)
 
 
