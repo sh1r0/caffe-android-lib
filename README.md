@@ -4,49 +4,20 @@ Caffe-Android-Lib
 Porting [caffe](https://github.com/BVLC/caffe) to android platform
 
 ## Build
+Tested with Android NDK r10e and cmake 3.2.2 on Ubuntu 14.04
+
 ```
 git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
 cd caffe-android-lib
-./build.py $(NDK_PATH)
+./build.sh $(NDK_PATH)
 ```
 
-## Usage
-- put required stuff into your device
+Note:
+If you would like to have boost libraries for armeabi-v7a-hard, there are pre-built ones in [CrystaX NDK](https://www.crystax.net/android/ndk).
 
-	```
-	./get_model.py
-	adb shell mkdir -p /sdcard/caffe_mobile/
-	adb push caffe-mobile/jni/caffe/models/bvlc_reference_caffenet/ /sdcard/caffe_mobile/bvlc_reference_caffenet/
-	```
-- copy `caffe-mobile/libs/armeabi-v7a/*.so` to your jni lib directory
-- in your main activity
-
-	```java
-	static {
-		System.loadLibrary("caffe");
-		System.loadLibrary("caffe_jni");
-	}
-	```
-- create `CaffeMobile.java`
-
-	```java
-	package com.sh1r0.caffe_android_demo;
-
-	public class CaffeMobile {
-		public native void enableLog(boolean enabled);
-		public native int loadModel(String modelPath, String weightsPath);
-		public native int predictImage(String imgPath);
-	}
-	```
-- call native methods
-
-	```java
-	CaffeMobile caffeMobile = new CaffeMobile();
-	caffeMobile.enableLog(true);  // optional, enable native logging
-	caffeMobile.loadModel(modelPath, weightsPath);  // init once
-	...
-	caffeMobile.predictImage(imgPath);
-	```
+## TODO
+- [ ] integrate using CMake's ExternalProject
+- [ ] add IO dependency support (e.g., lmdb)
 
 ## Optional
 `.envrc` files are for [direnv](http://direnv.net/)
@@ -55,7 +26,4 @@ cd caffe-android-lib
 ## Dependency
 * [Boost-for-Android](https://github.com/MysticTreeGames/Boost-for-Android)
 * [protobuf](https://code.google.com/p/protobuf)
-* [Eigen](http://eigen.tuxfamily.org)
-
-## Credits
-* [caffe-compact](https://github.com/chyh1990/caffe-compact)
+* ...

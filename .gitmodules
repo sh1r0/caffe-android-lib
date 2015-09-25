@@ -1,8 +1,18 @@
-[submodule "caffe-mobile/jni/caffe"]
-	path = caffe-mobile/jni/caffe
-	url = https://github.com/sh1r0/caffe.git
-	branch = mobile
+[submodule "OpenBLAS"]
+	path = OpenBLAS
+	url = https://github.com/xianyi/OpenBLAS.git
+[submodule "protobuf"]
+	path = protobuf
+	url = https://github.com/google/protobuf.git
 [submodule "Boost-for-Android"]
 	path = Boost-for-Android
 	url = https://github.com/sh1r0/Boost-for-Android.git
-	branch = master
+[submodule "opencv"]
+	path = opencv
+	url = https://github.com/Itseez/opencv.git
+[submodule "caffe"]
+	path = caffe
+	url = https://github.com/sh1r0/caffe.git
+[submodule "android-cmake"]
+	path = android-cmake
+	url = https://github.com/sh1r0/android-cmake.git

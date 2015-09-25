@@ -1,16 +1,5 @@
-3.2.4.tar.bz2
-protobuf-2.5.0.tar.bz2
-OpenCV-2.4.9-android-sdk.zip
+*.tar.bz2
+*.tar.gz
 
-eigen3/
-opencv/
-
-protobuf/jni/*
-protobuf/obj/
-!protobuf/jni/config.h
-!protobuf/jni/ndk-configure.sh
-!protobuf/jni/Android.mk
-!protobuf/jni/Application.mk
-
-caffe-mobile/obj/
-caffe-mobile/libs/
+android_lib/
+gflags-2.1.2/
