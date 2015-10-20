@@ -36,3 +36,4 @@ rm -rf "${INSTALL_DIR}/opencv"
 make install/strip
 
 cd "${WD}"
+rm -rf opencv/platforms/build_android_arm/

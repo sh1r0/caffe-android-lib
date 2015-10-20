@@ -24,3 +24,4 @@ rm -rf "${INSTALL_DIR}/protobuf_host"
 make install/strip
 
 cd "${WD}"
+rm -rf protobuf/build_host/
