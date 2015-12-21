@@ -12,9 +12,10 @@ fi
 WD=$(readlink -f "`dirname $0`")
 cd ${WD}
 
+./scripts/get_eigen.sh || exit 1
 ./scripts/build_boost.sh || exit 1
 ./scripts/build_gflags.sh || exit 1
-./scripts/build_openblas.sh || exit 1
+#./scripts/build_openblas.sh || exit 1
 ./scripts/build_opencv.sh || exit 1
 ./scripts/build_protobuf_host.sh || exit 1
 ./scripts/build_protobuf.sh || exit 1

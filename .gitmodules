@@ -4,9 +4,6 @@
 [submodule "protobuf"]
 	path = protobuf
 	url = https://github.com/google/protobuf.git
-[submodule "Boost-for-Android"]
-	path = Boost-for-Android
-	url = https://github.com/sh1r0/Boost-for-Android.git
 [submodule "opencv"]
 	path = opencv
 	url = https://github.com/Itseez/opencv.git

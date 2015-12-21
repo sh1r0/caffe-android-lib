@@ -6,8 +6,8 @@ INSTALL_DIR=${WD}/android_lib
 N_JOBS=8
 
 if [ -f "${INSTALL_DIR}/protobuf_host/bin/protoc" ]; then
-	echo "Found host protoc"
-	exit 0
+    echo "Found host protoc"
+    exit 0
 fi
 
 cd "${PROTOBUF_ROOT}"
@@ -16,7 +16,7 @@ mkdir build_host/
 cd build_host/
 
 cmake -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/protobuf_host" \
-	  -DBUILD_TESTING=OFF \
+      -DBUILD_TESTING=OFF \
       ../cmake
 
 make -j${N_JOBS}

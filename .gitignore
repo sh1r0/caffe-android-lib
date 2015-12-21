@@ -1,5 +1,6 @@
 *.tar.bz2
 *.tar.gz
 
-android_lib/
+android_lib/*
+download/*
 gflags-2.1.2/
