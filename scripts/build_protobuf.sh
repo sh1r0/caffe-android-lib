@@ -12,15 +12,15 @@ fi
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
 WD=$(readlink -f "`dirname $0`/..")
 PROTOBUF_ROOT=${WD}/protobuf
+BUILD_DIR=${PROTOBUF_ROOT}/build_dir
 INSTALL_DIR=${WD}/android_lib
 N_JOBS=8
 
-cd "${PROTOBUF_ROOT}"
-rm -rf build/
-mkdir build/
-cd build/
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+cd "${BUILD_DIR}"
 
-cmake -DCMAKE_TOOLCHAIN_FILE=~/android-cmake/android.toolchain.cmake \
+cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK=${NDK_ROOT} \
       -DCMAKE_BUILD_TYPE=Release \
       -DANDROID_ABI="${ANDROID_ABI}" \
@@ -35,4 +35,4 @@ rm -rf "${INSTALL_DIR}/protobuf"
 make install/strip
 
 cd "${WD}"
-rm -rf ${PROTOBUF_ROOT}/build/
+rm -rf ${BUILD_DIR}

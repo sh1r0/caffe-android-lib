@@ -12,13 +12,13 @@ fi
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
 WD=$(readlink -f "`dirname $0`/..")
 OPENCV_ROOT=${WD}/opencv
+BUILD_DIR=$OPENCV_ROOT/platforms/build_android_arm
 INSTALL_DIR=${WD}/android_lib
 N_JOBS=8
 
-cd "${OPENCV_ROOT}/platforms"
-rm -rf build_android_arm
-mkdir -p build_android_arm
-cd build_android_arm
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+cd "${BUILD_DIR}"
 
 cmake -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
       -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
@@ -37,4 +37,4 @@ rm -rf "${INSTALL_DIR}/opencv"
 make install/strip
 
 cd "${WD}"
-rm -rf ${OPENCV_ROOT}/platforms/build_android_arm/
+rm -rf "${BUILD_DIR}"

@@ -13,6 +13,7 @@ ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
 WD=$(readlink -f "`dirname $0`/..")
 N_JOBS=8
 CAFFE_ROOT=${WD}/caffe
+BUILD_DIR=${CAFFE_ROOT}/build
 ANDROID_LIB_ROOT=${WD}/android_lib
 OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
 PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
@@ -21,10 +22,9 @@ BOOST_HOME=${ANDROID_LIB_ROOT}/boost_1.56.0
 export OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas
 export EIGEN_HOME=${ANDROID_LIB_ROOT}/eigen3
 
-cd "${CAFFE_ROOT}"
-rm -rf build/
-mkdir build/
-cd build/
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+cd "${BUILD_DIR}"
 
 cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK="${NDK_ROOT}" \

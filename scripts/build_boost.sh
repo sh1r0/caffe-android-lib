@@ -12,17 +12,19 @@ fi
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
 WD=$(readlink -f "`dirname $0`/..")
 BOOST_ROOT=${WD}/boost
+BUILD_DIR=${BOOST_ROOT}/build
 INSTALL_DIR=${WD}/android_lib
 N_JOBS=8
 
-cd ${BOOST_ROOT}
+cd "${BOOST_ROOT}"
 ./get_boost.sh
+cd "${WD}"
 
-rm -rf build/
-mkdir build/
-cd build/
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+cd "${BUILD_DIR}"
 
-cmake -DCMAKE_TOOLCHAIN_FILE="~/test/caffe-android-lib/android-cmake/android.toolchain.cmake" \
+cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK="${NDK_ROOT}" \
       -DCMAKE_BUILD_TYPE=Release \
       -DANDROID_ABI="${ANDROID_ABI}" \
@@ -36,4 +38,4 @@ rm -rf "${INSTALL_DIR}/boost"
 make install/strip
 
 cd "${WD}"
-rm -rf ${BOOST_ROOT}/build/
+rm -rf "${BUILD_DIR}"

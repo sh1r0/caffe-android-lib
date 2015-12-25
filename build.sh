@@ -6,7 +6,7 @@ if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
 	echo "      '${0} /path/to/ndk'"
 	exit 1
 else
-	NDK_ROOT="${1:-${NDK_ROOT}}"
+	export NDK_ROOT="${1:-${NDK_ROOT}}"
 fi
 
 WD=$(readlink -f "`dirname $0`")

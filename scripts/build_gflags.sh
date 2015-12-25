@@ -15,6 +15,7 @@ TARBALL=gflags_v2.1.2.tar.gz
 WD=$(readlink -f "`dirname $0`/..")
 DOWNLOAD_DIR=${WD}/download
 GFLAGS_ROOT=${WD}/gflags-2.1.2
+BUILD_DIR=${GFLAGS_ROOT}/build
 INSTALL_DIR=${WD}/android_lib
 N_JOBS=8
 
@@ -28,11 +29,10 @@ cd ${WD}
 
 rm -rf ${GFLAGS_ROOT}
 tar zxf "${DOWNLOAD_DIR}/${TARBALL}"
-cd ${GFLAGS_ROOT}
 
-rm -rf build/
-mkdir build/
-cd build/
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+cd "${BUILD_DIR}"
 
 cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK="${NDK_ROOT}" \

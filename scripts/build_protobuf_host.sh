@@ -2,6 +2,7 @@
 
 WD=$(readlink -f "`dirname $0`/..")
 PROTOBUF_ROOT=${WD}/protobuf
+BUILD_DIR=${PROTOBUF_ROOT}/build_host
 INSTALL_DIR=${WD}/android_lib
 N_JOBS=8
 
@@ -10,10 +11,9 @@ if [ -f "${INSTALL_DIR}/protobuf_host/bin/protoc" ]; then
     exit 0
 fi
 
-cd "${PROTOBUF_ROOT}"
-rm -rf build_host/
-mkdir build_host/
-cd build_host/
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+cd "${BUILD_DIR}"
 
 cmake -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/protobuf_host" \
       -DBUILD_TESTING=OFF \
@@ -24,4 +24,4 @@ rm -rf "${INSTALL_DIR}/protobuf_host"
 make install/strip
 
 cd "${WD}"
-rm -rf protobuf/build_host/
+rm -rf "${BUILD_DIR}"
