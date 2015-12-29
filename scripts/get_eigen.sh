@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 EIGEN_VER1=3
 EIGEN_VER2=2
@@ -16,13 +17,14 @@ INSTALL_DIR=${WD}/android_lib
 
 [ ! -d ${DOWNLOAD_DIR} ] && mkdir -p ${DOWNLOAD_DIR}
 
-cd ${DOWNLOAD_DIR}
+cd "${DOWNLOAD_DIR}"
 if [ ! -f ${EIGEN_TAR} ]; then
-    wget -O $EIGEN_TAR $EIGEN_DOWNLOAD_LINK
+    wget -O ${EIGEN_TAR} ${EIGEN_DOWNLOAD_LINK}
 fi
-cd ${WD}
 
 if [ ! -d "${INSTALL_DIR}/${EIGEN_DIR}" ]; then
-    tar -jxf "$DOWNLOAD_DIR/$EIGEN_TAR"
+    tar -jxf ${EIGEN_TAR}
     mv eigen-eigen-*/ "${INSTALL_DIR}/${EIGEN_DIR}"
 fi
+
+cd "${WD}"

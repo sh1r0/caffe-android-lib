@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
     echo 'Either $NDK_ROOT should be set or provided as argument'
@@ -11,10 +12,11 @@ fi
 #export OPENBLAS_NUM_THREADS=1
 TOOLCHAIN_DIR=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin
 WD=$(readlink -f "`dirname $0`/..")
+OPENBLAS_ROOT=${WD}/OpenBLAS
 INSTALL_DIR=${WD}/android_lib
 N_JOBS=8
 
-cd OpenBLAS
+cd "${OPENBLAS_ROOT}"
 
 make clean
 make -j${N_JOBS} \

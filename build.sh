@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
 	echo 'Either $NDK_ROOT should be set or provided as argument'
@@ -6,19 +7,20 @@ if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
 	echo "      '${0} /path/to/ndk'"
 	exit 1
 else
-	export NDK_ROOT="${1:-${NDK_ROOT}}"
+	NDK_ROOT=$(readlink -f "${1:-${NDK_ROOT}}")
+	export NDK_ROOT="${NDK_ROOT}"
 fi
 
 WD=$(readlink -f "`dirname $0`")
 cd ${WD}
 
-./scripts/get_eigen.sh || exit 1
-./scripts/build_boost.sh || exit 1
-./scripts/build_gflags.sh || exit 1
-#./scripts/build_openblas.sh || exit 1
-./scripts/build_opencv.sh || exit 1
-./scripts/build_protobuf_host.sh || exit 1
-./scripts/build_protobuf.sh || exit 1
-./scripts/build_caffe.sh || exit 1
+./scripts/get_eigen.sh
+./scripts/build_boost.sh
+./scripts/build_gflags.sh
+#./scripts/build_openblas.sh
+./scripts/build_opencv.sh
+./scripts/build_protobuf_host.sh
+./scripts/build_protobuf.sh
+./scripts/build_caffe.sh
 
 echo "DONE!!"

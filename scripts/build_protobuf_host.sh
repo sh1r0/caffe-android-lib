@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 WD=$(readlink -f "`dirname $0`/..")
 PROTOBUF_ROOT=${WD}/protobuf

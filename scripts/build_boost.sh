@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
     echo 'Either $NDK_ROOT should be set or provided as argument'

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
     echo 'Either $NDK_ROOT should be set or provided as argument'
@@ -25,10 +26,10 @@ cd ${DOWNLOAD_DIR}
 if [ ! -f ${TARBALL} ]; then
     wget ${LINK} -O ${TARBALL}
 fi
-cd ${WD}
 
-rm -rf ${GFLAGS_ROOT}
-tar zxf "${DOWNLOAD_DIR}/${TARBALL}"
+if [ ! -d ${GFLAGS_ROOT} ]; then
+    tar zxf ${TARBALL} -C "${WD}"
+fi
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
