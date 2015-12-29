@@ -3,7 +3,7 @@ set -e
 
 EIGEN_VER1=3
 EIGEN_VER2=2
-EIGEN_VER3=5
+EIGEN_VER3=7
 
 EIGEN_DOWNLOAD_LINK="http://bitbucket.org/eigen/eigen/get/${EIGEN_VER1}.${EIGEN_VER2}.${EIGEN_VER3}.tar.bz2"
 EIGEN_TAR="eigen_${EIGEN_VER1}.${EIGEN_VER2}.${EIGEN_VER3}.tar.bz2"

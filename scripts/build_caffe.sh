@@ -20,8 +20,22 @@ OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
 PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
 GFLAGS_HOME=${ANDROID_LIB_ROOT}/gflags
 BOOST_HOME=${ANDROID_LIB_ROOT}/boost_1.56.0
-export OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas
-export EIGEN_HOME=${ANDROID_LIB_ROOT}/eigen3
+
+USE_OPENBLAS=${USE_OPENBLAS:-0}
+if [ ${USE_OPENBLAS} -eq 1 ]; then
+    if [ "${ANDROID_ABI}" = "armeabi-v7a-hard with NEON" ]; then
+        OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas-hard
+    else
+        OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas-android
+    fi
+
+    BLAS=open
+    export OpenBLAS_HOME="${OpenBLAS_HOME}"
+else
+    BLAS=eigen
+    export EIGEN_HOME="${ANDROID_LIB_ROOT}/eigen3"
+fi
+
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
@@ -41,7 +55,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DUSE_LMDB=OFF \
       -DUSE_LEVELDB=OFF \
       -DUSE_HDF5=OFF \
-      -DBLAS=eigen \
+      -DBLAS=${BLAS} \
       -DBOOST_ROOT="${BOOST_HOME}" \
       -DGFLAGS_INCLUDE_DIR="${GFLAGS_HOME}/include" \
       -DGFLAGS_LIBRARY="${GFLAGS_HOME}/lib/libgflags.a" \

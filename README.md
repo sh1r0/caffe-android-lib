@@ -11,15 +11,43 @@ Porting [caffe](https://github.com/BVLC/caffe) to android platform
 ## Build
 Tested with Android NDK r10e and cmake 3.2.2 on Ubuntu 14.04
 
-```
+```shell
 git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
 cd caffe-android-lib
 ./build.sh <path/to/ndk>
 ```
 
+### OpenBLAS
+By defalut, Eigen is used as the underlying BLAS library to build caffe in this project.
+And according to my experiments, there is little performance difference between the builds based on Eigen and OpenBLAS (issue [#27](https://github.com/sh1r0/caffe-android-lib/issues/27)).
+But if you really desire to use OpenBLAS instead, please check the following steps.
+
+```shell
+# 1. set OpenBLAS usage explicitly
+export USE_OPENBLAS=1  # if 0, eigen is used
+
+# 2. specify ANDROID_ABI in either case
+# "armeabi-v7a with NEON": use the prebuilt library (bad performance)
+# "armeabi-v7a-hard with NEON": build from the lastest sources (JNI issues, see below)
+export ANDROID_ABI="armeabi-v7a with NEON"  # or "armeabi-v7a-hard with NEON"
+
+# 3. Build
+./build.sh <path/to/ndk>
+```
+
+## Issues
+- Caffe build with Eigen cannot pass some tests ([ref](https://github.com/BVLC/caffe/pull/2619#issuecomment-113224948))
+- JNI library has runtime problems when it's built with hard float support ([ref](https://groups.google.com/forum/#!msg/android-ndk/NbUq9FDDZOo/TJJsAS6nM7wJ))
+
+If anyone has any idea about the above issues, please let me know.
+Any comments or issues are also welcomed.
+Thanks.
+
 ## TODO
 - [ ] integrate using CMake's ExternalProject
 - [ ] add IO dependency support (e.g., lmdb)
+- [ ] OpenCL support
+- [ ] CUDA suuport
 
 ## Optional
 `.envrc` files are for [direnv](http://direnv.net/)

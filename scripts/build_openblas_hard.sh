@@ -24,7 +24,7 @@ make -j${N_JOBS} \
      CROSS_SUFFIX=$TOOLCHAIN_DIR/arm-linux-androideabi- \
      HOSTCC=gcc NO_LAPACK=1 TARGET=ARMV7
 
-rm -rf "$INSTALL_DIR/openblas"
-make PREFIX="$INSTALL_DIR/openblas" install
+rm -rf "$INSTALL_DIR/openblas-hard"
+make PREFIX="$INSTALL_DIR/openblas-hard" install
 
 cd "${WD}"
