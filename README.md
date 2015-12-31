@@ -28,16 +28,17 @@ export USE_OPENBLAS=1  # if 0, eigen is used
 
 # 2. specify ANDROID_ABI in either case
 # "armeabi-v7a with NEON": use the prebuilt library (bad performance)
-# "armeabi-v7a-hard with NEON": build from the lastest sources (JNI issues, see below)
-export ANDROID_ABI="armeabi-v7a with NEON"  # or "armeabi-v7a-hard with NEON"
+# "armeabi-v7a-hard with NEON": build from the lastest sources (see the note below)
+export ANDROID_ABI="armeabi-v7a-hard with NEON"  # or "armeabi-v7a with NEON"
 
 # 3. Build
 ./build.sh <path/to/ndk>
 ```
+Note: For "armeabi-v7a-hard with NEON", you can set `NUM_THREADS` to fit your need in `scripts/build_openblas_hard.sh`.
+By default, it's 1 which means single-threaded.
 
 ## Issues
 - Caffe build with Eigen cannot pass some tests ([ref](https://github.com/BVLC/caffe/pull/2619#issuecomment-113224948))
-- JNI library has runtime problems when it's built with hard float support ([ref](https://groups.google.com/forum/#!msg/android-ndk/NbUq9FDDZOo/TJJsAS6nM7wJ))
 
 If anyone has any idea about the above issues, please let me know.
 Any comments or issues are also welcomed.
