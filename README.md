@@ -18,24 +18,21 @@ cd caffe-android-lib
 ```
 
 ### OpenBLAS
-By defalut, Eigen is used as the underlying BLAS library to build caffe in this project.
-And according to my experiments, there is little performance difference between the builds based on Eigen and OpenBLAS (issue [#27](https://github.com/sh1r0/caffe-android-lib/issues/27)).
-But if you really desire to use OpenBLAS instead, please check the following steps.
+In general, Eigen is used as the underlying BLAS library to build caffe in this project, since OpenBLAS for Android supports arm-based processors only.
+But if you hope to use OpenBLAS instead, please check the following steps.
 
 ```shell
 # 1. set OpenBLAS usage explicitly
-export USE_OPENBLAS=1  # if 0, eigen is used
+export USE_OPENBLAS=1  # if 0, Eigen is used
 
 # 2. specify ANDROID_ABI in either case
-# "armeabi-v7a with NEON": use the prebuilt library (bad performance)
-# "armeabi-v7a-hard with NEON": build from the lastest sources (see the note below)
-export ANDROID_ABI="armeabi-v7a-hard with NEON"  # or "armeabi-v7a with NEON"
+# "armeabi-v7a with NEON": use the prebuilt library (not recommended, slower than Eigen)
+# "armeabi-v7a-hard-softfp with NEON": build from the lastest sources
+export ANDROID_ABI="armeabi-v7a-hard-softfp with NEON"  # or "armeabi-v7a with NEON"
 
 # 3. Build
 ./build.sh <path/to/ndk>
 ```
-Note: For "armeabi-v7a-hard with NEON", you can set `NUM_THREADS` to fit your need in `scripts/build_openblas_hard.sh`.
-By default, it's 1 which means single-threaded.
 
 ## Issues
 - Caffe build with Eigen cannot pass some tests ([ref](https://github.com/BVLC/caffe/pull/2619#issuecomment-113224948))

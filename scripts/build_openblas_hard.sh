@@ -40,7 +40,7 @@ make -j${N_JOBS} \
      CC="$TOOLCHAIN_DIR/arm-linux-androideabi-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-arm" \
      CROSS_SUFFIX=$TOOLCHAIN_DIR/arm-linux-androideabi- \
      HOSTCC=gcc NO_LAPACK=1 TARGET=ARMV7 \
-     USE_THREAD=1 NUM_THREADS=1
+     USE_THREAD=1 NUM_THREADS=8 USE_OPENMP=1
 
 rm -rf "$INSTALL_DIR/openblas-hard"
 make PREFIX="$INSTALL_DIR/openblas-hard" install

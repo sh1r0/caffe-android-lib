@@ -18,10 +18,14 @@ export ANDROID_ABI="${ANDROID_ABI:-"armeabi-v7a with NEON"}"
 export USE_OPENBLAS=${USE_OPENBLAS:-0}
 
 if [ ${USE_OPENBLAS} -eq 1 ]; then
-    if [ "${ANDROID_ABI}" = "armeabi-v7a-hard with NEON" ]; then
+    if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
         ./scripts/build_openblas_hard.sh
-    else
+    elif [ "${ANDROID_ABI}" = "armeabi-v7a with NEON"  ]; then
         ./scripts/get_openblas.sh
+    else
+        echo "Warning: not support OpenBLAS for ABI: ${ANDROID_ABI}, use Eigen instead"
+        export USE_OPENBLAS=0
+        ./scripts/get_eigen.sh
     fi
 else
     ./scripts/get_eigen.sh

@@ -23,10 +23,13 @@ BOOST_HOME=${ANDROID_LIB_ROOT}/boost_1.56.0
 
 USE_OPENBLAS=${USE_OPENBLAS:-0}
 if [ ${USE_OPENBLAS} -eq 1 ]; then
-    if [ "${ANDROID_ABI}" = "armeabi-v7a-hard with NEON" ]; then
+    if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
         OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas-hard
-    else
+    elif [ "${ANDROID_ABI}" = "armeabi-v7a with NEON"  ]; then
         OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas-android
+    else
+        echo "Error: not support OpenBLAS for ABI: ${ANDROID_ABI}"
+        exit 1
     fi
 
     BLAS=open
@@ -47,6 +50,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_ABI="${ANDROID_ABI}" \
       -DANDROID_NATIVE_API_LEVEL=21 \
       -DANDROID_TOOLCHAIN_NAME=arm-linux-androideabi-4.9 \
+      -DANDROID_USE_OPENMP=ON \
       -DADDITIONAL_FIND_PATH="${ANDROID_LIB_ROOT}" \
       -DBUILD_python=OFF \
       -DBUILD_docs=OFF \
