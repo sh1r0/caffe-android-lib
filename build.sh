@@ -16,6 +16,7 @@ cd ${WD}
 
 export ANDROID_ABI="${ANDROID_ABI:-"armeabi-v7a with NEON"}"
 export USE_OPENBLAS=${USE_OPENBLAS:-0}
+export N_JOBS=${N_JOBS:-4}
 
 if [ ${USE_OPENBLAS} -eq 1 ]; then
     if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then

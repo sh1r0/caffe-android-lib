@@ -15,7 +15,7 @@ WD=$(readlink -f "`dirname $0`/..")
 BOOST_ROOT=${WD}/boost
 BUILD_DIR=${BOOST_ROOT}/build
 INSTALL_DIR=${WD}/android_lib
-N_JOBS=8
+N_JOBS=${N_JOBS:-4}
 
 cd "${BOOST_ROOT}"
 ./get_boost.sh

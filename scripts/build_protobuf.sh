@@ -15,7 +15,7 @@ WD=$(readlink -f "`dirname $0`/..")
 PROTOBUF_ROOT=${WD}/protobuf
 BUILD_DIR=${PROTOBUF_ROOT}/build_dir
 INSTALL_DIR=${WD}/android_lib
-N_JOBS=8
+N_JOBS=${N_JOBS:-4}
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"

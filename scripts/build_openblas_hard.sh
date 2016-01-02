@@ -31,7 +31,7 @@ TOOLCHAIN_DIR=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/${OS}-${BI
 WD=$(readlink -f "`dirname $0`/..")
 OPENBLAS_ROOT=${WD}/OpenBLAS
 INSTALL_DIR=${WD}/android_lib
-N_JOBS=8
+N_JOBS=${N_JOBS:-4}
 
 cd "${OPENBLAS_ROOT}"
 

@@ -5,7 +5,7 @@ WD=$(readlink -f "`dirname $0`/..")
 PROTOBUF_ROOT=${WD}/protobuf
 BUILD_DIR=${PROTOBUF_ROOT}/build_host
 INSTALL_DIR=${WD}/android_lib
-N_JOBS=8
+N_JOBS=${N_JOBS:-4}
 
 if [ -f "${INSTALL_DIR}/protobuf_host/bin/protoc" ]; then
     echo "Found host protoc"

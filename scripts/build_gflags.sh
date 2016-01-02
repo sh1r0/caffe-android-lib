@@ -18,7 +18,7 @@ DOWNLOAD_DIR=${WD}/download
 GFLAGS_ROOT=${WD}/gflags-2.1.2
 BUILD_DIR=${GFLAGS_ROOT}/build
 INSTALL_DIR=${WD}/android_lib
-N_JOBS=8
+N_JOBS=${N_JOBS:-4}
 
 [ ! -d ${DOWNLOAD_DIR} ] && mkdir -p ${DOWNLOAD_DIR}
 
