@@ -49,7 +49,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DCMAKE_BUILD_TYPE=Release \
       -DANDROID_ABI="${ANDROID_ABI}" \
       -DANDROID_NATIVE_API_LEVEL=21 \
-      -DANDROID_TOOLCHAIN_NAME=arm-linux-androideabi-4.9 \
       -DANDROID_USE_OPENMP=ON \
       -DADDITIONAL_FIND_PATH="${ANDROID_LIB_ROOT}" \
       -DBUILD_python=OFF \
