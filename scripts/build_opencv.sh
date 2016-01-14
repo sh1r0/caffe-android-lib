@@ -17,6 +17,12 @@ BUILD_DIR=$OPENCV_ROOT/platforms/build_android_arm
 INSTALL_DIR=${WD}/android_lib
 N_JOBS=${N_JOBS:-4}
 
+if [ "${ANDROID_ABI}" = "armeabi" ]; then
+    API_LEVEL=19
+else
+    API_LEVEL=21
+fi
+
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
@@ -24,7 +30,7 @@ cd "${BUILD_DIR}"
 cmake -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
       -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK="${NDK_ROOT}" \
-      -DANDROID_NATIVE_API_LEVEL=21 \
+      -DANDROID_NATIVE_API_LEVEL=${API_LEVEL} \
       -DANDROID_ABI="${ANDROID_ABI}" \
       -D WITH_CUDA=OFF \
       -D WITH_MATLAB=OFF \

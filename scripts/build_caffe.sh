@@ -23,17 +23,8 @@ BOOST_HOME=${ANDROID_LIB_ROOT}/boost_1.56.0
 
 USE_OPENBLAS=${USE_OPENBLAS:-0}
 if [ ${USE_OPENBLAS} -eq 1 ]; then
-    if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
-        OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas-hard
-    elif [ "${ANDROID_ABI}" = "armeabi-v7a with NEON"  ]; then
-        OpenBLAS_HOME=${ANDROID_LIB_ROOT}/openblas-android
-    else
-        echo "Error: not support OpenBLAS for ABI: ${ANDROID_ABI}"
-        exit 1
-    fi
-
     BLAS=open
-    export OpenBLAS_HOME="${OpenBLAS_HOME}"
+    export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas"
 else
     BLAS=eigen
     export EIGEN_HOME="${ANDROID_LIB_ROOT}/eigen3"

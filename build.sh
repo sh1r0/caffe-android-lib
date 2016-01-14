@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
@@ -18,11 +18,25 @@ export ANDROID_ABI="${ANDROID_ABI:-"armeabi-v7a with NEON"}"
 export USE_OPENBLAS=${USE_OPENBLAS:-0}
 export N_JOBS=${N_JOBS:-4}
 
+SUPPORTED_ABIS=("armeabi" "armeabi-v7a-hard-softfp with NEON" "arm64-v8a" "x86_64")
+
+function support_abi() {
+    if [ "$#" -ne 1  ]; then
+        exit 1
+    fi
+    for i in "${SUPPORTED_ABIS[@]}"
+    do
+        if [ "$i" == "$1"  ] ; then
+            echo "y"
+            exit 0
+        fi
+    done
+    exit 1
+}
+
 if [ ${USE_OPENBLAS} -eq 1 ]; then
-    if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
-        ./scripts/build_openblas_hard.sh
-    elif [ "${ANDROID_ABI}" = "armeabi-v7a with NEON"  ]; then
-        ./scripts/get_openblas.sh
+    if [ $(support_abi "${ANDROID_ABI}") ]; then
+        ./scripts/build_openblas.sh
     else
         echo "Warning: not support OpenBLAS for ABI: ${ANDROID_ABI}, use Eigen instead"
         export USE_OPENBLAS=0
