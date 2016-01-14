@@ -27,7 +27,6 @@ else
     BIT=x86
 fi
 
-TOOLCHAIN_DIR=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/${OS}-${BIT}/bin
 WD=$(readlink -f "`dirname $0`/..")
 OPENBLAS_ROOT=${WD}/OpenBLAS
 INSTALL_DIR=${WD}/android_lib
@@ -36,11 +35,24 @@ N_JOBS=${N_JOBS:-4}
 cd "${OPENBLAS_ROOT}"
 
 make clean
-make -j${N_JOBS} \
-     CC="$TOOLCHAIN_DIR/arm-linux-androideabi-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-arm" \
-     CROSS_SUFFIX=$TOOLCHAIN_DIR/arm-linux-androideabi- \
-     HOSTCC=gcc NO_LAPACK=1 TARGET=ARMV7 \
-     USE_THREAD=1 NUM_THREADS=8 USE_OPENMP=1
+if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
+    TOOLCHAIN_DIR=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/${OS}-${BIT}/bin
+    make -j${N_JOBS} \
+         CC="$TOOLCHAIN_DIR/arm-linux-androideabi-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-arm" \
+         CROSS_SUFFIX=$TOOLCHAIN_DIR/arm-linux-androideabi- \
+         HOSTCC=gcc NO_LAPACK=1 TARGET=ARMV7 \
+         USE_THREAD=1 NUM_THREADS=8 USE_OPENMP=1
+elif [ "${ANDROID_ABI}" = "arm64-v8a"  ]; then
+    TOOLCHAIN_DIR=$NDK_ROOT/toolchains/aarch64-linux-android-4.9/prebuilt/${OS}-${BIT}/bin
+    make -j${N_JOBS} \
+         CC="$TOOLCHAIN_DIR/aarch64-linux-android-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-arm64" \
+         CROSS_SUFFIX=$TOOLCHAIN_DIR/aarch64-linux-android- \
+         HOSTCC=gcc NO_LAPACK=1 TARGET=ARMV8 \
+         USE_THREAD=1 NUM_THREADS=8 USE_OPENMP=1
+else
+    echo "Error: not support OpenBLAS for ABI: ${ANDROID_ABI}"
+    exit 1
+fi
 
 rm -rf "$INSTALL_DIR/openblas-hard"
 make PREFIX="$INSTALL_DIR/openblas-hard" install
