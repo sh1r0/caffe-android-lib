@@ -20,6 +20,7 @@ OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
 PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
 GFLAGS_HOME=${ANDROID_LIB_ROOT}/gflags
 BOOST_HOME=${ANDROID_LIB_ROOT}/boost_1.56.0
+export LMDB_DIR=${ANDROID_LIB_ROOT}/lmdb
 
 USE_OPENBLAS=${USE_OPENBLAS:-0}
 if [ ${USE_OPENBLAS} -eq 1 ]; then
@@ -46,7 +47,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DBUILD_docs=OFF \
       -DCPU_ONLY=ON \
       -DUSE_GLOG=OFF \
-      -DUSE_LMDB=OFF \
+      -DUSE_LMDB=ON \
       -DUSE_LEVELDB=OFF \
       -DUSE_HDF5=OFF \
       -DBLAS=${BLAS} \

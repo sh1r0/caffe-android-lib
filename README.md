@@ -6,7 +6,7 @@ Porting [caffe](https://github.com/BVLC/caffe) to android platform
 ### Support
 * Up-to-date caffe ([b086cc3](https://github.com/BVLC/caffe/commit/b086cc3cb650e51ffbd53290f3a0002844853897))
 * CPU only
-* Without support for some IO libs (leveldb, lmdb and hdf5)
+* Without support for some IO libs (leveldb and hdf5)
 
 ## Build
 Tested with Android NDK r10e and cmake 3.2.2 on Ubuntu 14.04
@@ -42,7 +42,7 @@ Thanks.
 
 ## TODO
 - [ ] integrate using CMake's ExternalProject
-- [ ] add IO dependency support (e.g., lmdb)
+- [ ] add IO dependency support (i.e., leveldb and hdf5)
 - [ ] OpenCL support
 - [ ] CUDA suuport
 
