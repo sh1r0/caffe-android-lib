@@ -16,3 +16,6 @@
 [submodule "lmdb"]
 	path = lmdb
 	url = https://github.com/LMDB/lmdb.git
+[submodule "glog"]
+	path = glog
+	url = https://github.com/sh1r0/glog.git
