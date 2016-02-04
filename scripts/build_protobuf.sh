@@ -27,7 +27,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_ABI="${ANDROID_ABI}" \
       -DANDROID_NATIVE_API_LEVEL=21 \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}/protobuf \
-      -DBUILD_TESTING=OFF \
+      -Dprotobuf_BUILD_TESTS=OFF \
       ../cmake
 
 make -j${N_JOBS}
