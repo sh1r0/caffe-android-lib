@@ -48,6 +48,7 @@ fi
 
 ./scripts/build_boost.sh
 ./scripts/build_gflags.sh
+./scripts/build_glog.sh
 ./scripts/build_lmdb.sh
 ./scripts/build_opencv.sh
 ./scripts/build_protobuf_host.sh
