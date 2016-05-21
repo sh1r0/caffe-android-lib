@@ -18,31 +18,8 @@ export ANDROID_ABI="${ANDROID_ABI:-"armeabi-v7a with NEON"}"
 export USE_OPENBLAS=${USE_OPENBLAS:-0}
 export N_JOBS=${N_JOBS:-4}
 
-SUPPORTED_ABIS=("armeabi" "armeabi-v7a-hard-softfp with NEON" "arm64-v8a" "x86_64")
-
-function support_abi() {
-    if [ "$#" -ne 1  ]; then
-        exit 1
-    fi
-    for i in "${SUPPORTED_ABIS[@]}"
-    do
-        if [ "$i" == "$1"  ] ; then
-            echo "y"
-            exit 0
-        fi
-    done
-    exit 1
-}
-
-if [ ${USE_OPENBLAS} -eq 1 ]; then
-    if [ $(support_abi "${ANDROID_ABI}") ]; then
-        ./scripts/build_openblas.sh
-    else
-        echo "Warning: not support OpenBLAS for ABI: ${ANDROID_ABI}, use Eigen instead"
-        export USE_OPENBLAS=0
-        ./scripts/get_eigen.sh
-    fi
-else
+if [[ "${USE_OPENBLAS}" -ne 1 ]] || ./scripts/build_openblas.sh ; then
+    export USE_OPENBLAS=0
     ./scripts/get_eigen.sh
 fi
 

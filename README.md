@@ -9,7 +9,7 @@ Porting [caffe](https://github.com/BVLC/caffe) to android platform
 * Without support for some IO libs (leveldb and hdf5)
 
 ## Build
-Tested with Android NDK r10e and cmake 3.2.2 on Ubuntu 14.04
+Tested with Android NDK r11c and cmake 3.3.2 on Ubuntu 14.04
 
 ```shell
 git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
