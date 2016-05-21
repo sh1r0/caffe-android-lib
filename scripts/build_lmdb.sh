@@ -35,7 +35,7 @@ N_JOBS=${N_JOBS:-4}
 
 cd "${LMDB_ROOT}"
 
-if [ "${ANDROID_ABI:0:7}" = "armeabi" ]; then
+if [ `expr substr "${ANDROID_ABI}" 1 7` = "armeabi" ]; then
     TOOLCHAIN_DIR=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/${OS}-${BIT}/bin
     CC="$TOOLCHAIN_DIR/arm-linux-androideabi-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-arm"
     AR=$TOOLCHAIN_DIR/arm-linux-androideabi-ar
@@ -45,8 +45,8 @@ elif [ "${ANDROID_ABI}" = "arm64-v8a" ]; then
     AR=$TOOLCHAIN_DIR/aarch64-linux-android-ar
 elif [ "${ANDROID_ABI}" = "x86" ]; then
     TOOLCHAIN_DIR=$NDK_ROOT/toolchains/x86-4.9/prebuilt/${OS}-${BIT}/bin
-    CC="$TOOLCHAIN_DIR/x86-linux-android-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-x86"
-    AR=$TOOLCHAIN_DIR/x86-linux-android-ar
+    CC="$TOOLCHAIN_DIR/i686-linux-android-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-x86"
+    AR=$TOOLCHAIN_DIR/i686-linux-android-ar
 elif [ "${ANDROID_ABI}" = "x86_64" ]; then
     TOOLCHAIN_DIR=$NDK_ROOT/toolchains/x86_64-4.9/prebuilt/${OS}-${BIT}/bin
     CC="$TOOLCHAIN_DIR/x86_64-linux-android-gcc --sysroot=$NDK_ROOT/platforms/android-21/arch-x86_64"
