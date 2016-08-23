@@ -15,23 +15,15 @@ WD=$(readlink -f "`dirname $0`/..")
 N_JOBS=${N_JOBS:-4}
 CAFFE_ROOT=${WD}/caffe
 BUILD_DIR=${CAFFE_ROOT}/build
+
 ANDROID_LIB_ROOT=${WD}/android_lib
-OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
-PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
+BOOST_HOME=${ANDROID_LIB_ROOT}/boost
 GFLAGS_HOME=${ANDROID_LIB_ROOT}/gflags
 GLOG_ROOT=${ANDROID_LIB_ROOT}/glog
-BOOST_HOME=${ANDROID_LIB_ROOT}/boost
+OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
+PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
 export LMDB_DIR=${ANDROID_LIB_ROOT}/lmdb
-
-USE_OPENBLAS=${USE_OPENBLAS:-0}
-if [ ${USE_OPENBLAS} -eq 1 ]; then
-    BLAS=open
-    export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas"
-else
-    BLAS=eigen
-    export EIGEN_HOME="${ANDROID_LIB_ROOT}/eigen3"
-fi
-
+export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas"
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
@@ -50,7 +42,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DUSE_LMDB=ON \
       -DUSE_LEVELDB=OFF \
       -DUSE_HDF5=OFF \
-      -DBLAS=${BLAS} \
+      -DBLAS=open \
       -DBOOST_ROOT="${BOOST_HOME}" \
       -DGFLAGS_INCLUDE_DIR="${GFLAGS_HOME}/include" \
       -DGFLAGS_LIBRARY="${GFLAGS_HOME}/lib/libgflags.a" \

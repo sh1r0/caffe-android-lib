@@ -18,9 +18,9 @@ export ANDROID_ABI="${ANDROID_ABI:-"armeabi-v7a with NEON"}"
 export USE_OPENBLAS=${USE_OPENBLAS:-0}
 export N_JOBS=${N_JOBS:-4}
 
-if [[ "${USE_OPENBLAS}" -ne 1 ]] || ./scripts/build_openblas.sh ; then
-    export USE_OPENBLAS=0
-    ./scripts/get_eigen.sh
+if ! ./scripts/build_openblas.sh ; then
+	echo "Failed to build OpenBLAS"
+	exit 1
 fi
 
 ./scripts/build_boost.sh
