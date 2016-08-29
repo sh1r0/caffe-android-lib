@@ -2,7 +2,7 @@
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo 'Either $NDK_ROOT should be set or provided as argument'
+    echo "Either NDK_ROOT should be set or provided as argument"
     echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
     echo "      '${0} /path/to/ndk'"
     exit 1
@@ -11,16 +11,15 @@ else
     export NDK_ROOT="${NDK_ROOT}"
 fi
 
-WD=$(readlink -f "`dirname $0`")
-cd ${WD}
+WD=$(readlink -f "$(dirname "$0")")
+cd "${WD}"
 
-export ANDROID_ABI="${ANDROID_ABI:-"armeabi-v7a with NEON"}"
-export USE_OPENBLAS=${USE_OPENBLAS:-0}
-export N_JOBS=${N_JOBS:-4}
+export ANDROID_ABI="${ANDROID_ABI:-"arm64-v8a"}"
+export N_JOBS=${N_JOBS:-1}
 
 if ! ./scripts/build_openblas.sh ; then
-	echo "Failed to build OpenBLAS"
-	exit 1
+    echo "Failed to build OpenBLAS"
+    exit 1
 fi
 
 ./scripts/build_boost.sh

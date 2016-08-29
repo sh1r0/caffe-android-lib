@@ -14,8 +14,18 @@ Tested with Android NDK r11c and cmake 3.3.2 on Ubuntu 14.04
 ```shell
 git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
 cd caffe-android-lib
+export ANDROID_ABI="arm64-v8a" # Optional, see the note below
 ./build.sh <path/to/ndk>
 ```
+
+### NOTE: OpenBLAS
+OpenBLAS is the only supported BLAS choice now, and the supported ABIs are the following:
+
+* `armeabi`
+* `armeabi-v7a-hard-softfp with NEON`
+* `arm64-v8a` (default)
+* `x86`
+* `x86_64`
 
 ## Issues
 
