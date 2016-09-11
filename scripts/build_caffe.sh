@@ -22,6 +22,8 @@ GFLAGS_HOME=${ANDROID_LIB_ROOT}/gflags
 GLOG_ROOT=${ANDROID_LIB_ROOT}/glog
 OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
 PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
+SNAPPY_ROOT_DIR=${ANDROID_LIB_ROOT}/snappy
+export LEVELDB_ROOT=${ANDROID_LIB_ROOT}/leveldb
 export LMDB_DIR=${ANDROID_LIB_ROOT}/lmdb
 export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas"
 
@@ -40,7 +42,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DBUILD_docs=OFF \
       -DCPU_ONLY=ON \
       -DUSE_LMDB=ON \
-      -DUSE_LEVELDB=OFF \
+      -DUSE_LEVELDB=ON \
       -DUSE_HDF5=OFF \
       -DBLAS=open \
       -DBOOST_ROOT="${BOOST_HOME}" \
@@ -52,6 +54,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DPROTOBUF_PROTOC_EXECUTABLE="${ANDROID_LIB_ROOT}/protobuf_host/bin/protoc" \
       -DPROTOBUF_INCLUDE_DIR="${PROTOBUF_ROOT}/include" \
       -DPROTOBUF_LIBRARY="${PROTOBUF_ROOT}/lib/libprotobuf.a" \
+	  -DSNAPPY_ROOT_DIR=${SNAPPY_ROOT_DIR} \
       -DCMAKE_INSTALL_PREFIX="${ANDROID_LIB_ROOT}/caffe" \
       ..
 

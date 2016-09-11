@@ -26,6 +26,8 @@ fi
 ./scripts/build_gflags.sh
 ./scripts/build_glog.sh
 ./scripts/build_lmdb.sh
+./scripts/build_snappy.sh
+./scripts/build_leveldb.sh
 ./scripts/build_opencv.sh
 ./scripts/build_protobuf_host.sh
 ./scripts/build_protobuf.sh
