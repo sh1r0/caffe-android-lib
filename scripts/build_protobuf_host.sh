@@ -23,6 +23,6 @@ cmake -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/protobuf_host" \
 make -j${N_JOBS}
 rm -rf "${INSTALL_DIR}/protobuf_host"
 make install/strip
+git clean -fd
 
 cd "${WD}"
-rm -rf "${BUILD_DIR}"

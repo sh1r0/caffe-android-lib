@@ -11,25 +11,11 @@ else
 fi
 
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
-LINK="https://github.com/gflags/gflags/archive/v2.1.2.tar.gz"
-TARBALL=gflags_v2.1.2.tar.gz
 WD=$(readlink -f "`dirname $0`/..")
-DOWNLOAD_DIR=${WD}/download
-GFLAGS_ROOT=${WD}/gflags-2.1.2
+GFLAGS_ROOT=${WD}/gflags
 BUILD_DIR=${GFLAGS_ROOT}/build
-INSTALL_DIR=${WD}/android_lib
+INSTALL_DIR=${WD}/android_lib/gflags
 N_JOBS=${N_JOBS:-4}
-
-[ ! -d ${DOWNLOAD_DIR} ] && mkdir -p ${DOWNLOAD_DIR}
-
-cd ${DOWNLOAD_DIR}
-if [ ! -f ${TARBALL} ]; then
-    wget ${LINK} -O ${TARBALL}
-fi
-
-if [ ! -d ${GFLAGS_ROOT} ]; then
-    tar zxf ${TARBALL} -C "${WD}"
-fi
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
@@ -40,11 +26,12 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DCMAKE_BUILD_TYPE=Release \
       -DANDROID_ABI="${ANDROID_ABI}" \
       -DANDROID_NATIVE_API_LEVEL=21 \
-      -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/gflags" \
+      -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
       ..
 
 make -j${N_JOBS}
-rm -rf "${INSTALL_DIR}/gflags"
+rm -rf "${INSTALL_DIR}"
 make install/strip
+git clean -fd
 
 cd "${WD}"

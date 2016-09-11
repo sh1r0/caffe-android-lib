@@ -19,3 +19,6 @@
 [submodule "glog"]
 	path = glog
 	url = https://github.com/sh1r0/glog.git
+[submodule "gflags"]
+	path = gflags
+	url = https://github.com/gflags/gflags.git
