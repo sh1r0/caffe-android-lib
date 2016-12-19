@@ -25,6 +25,13 @@ PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
 export LMDB_DIR=${ANDROID_LIB_ROOT}/lmdb
 export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas"
 
+USE_QSML=${USE_QSML:-0}
+if [ ${USE_QSML} -eq 1 ]; then
+    BLAS=QSML
+else
+    BLAS=open
+fi
+
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
@@ -42,7 +49,9 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DUSE_LMDB=ON \
       -DUSE_LEVELDB=OFF \
       -DUSE_HDF5=OFF \
-      -DBLAS=open \
+      -DBLAS=${BLAS} \
+      -DQSML_VERSION="${QSML_VERSION}" \
+      -DQSML_DIR="${QSML_DIR}"
       -DBOOST_ROOT="${BOOST_HOME}" \
       -DGFLAGS_INCLUDE_DIR="${GFLAGS_HOME}/include" \
       -DGFLAGS_LIBRARY="${GFLAGS_HOME}/lib/libgflags.a" \
