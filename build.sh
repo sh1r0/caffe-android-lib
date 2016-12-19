@@ -17,9 +17,27 @@ cd "${WD}"
 export ANDROID_ABI="${ANDROID_ABI:-"arm64-v8a"}"
 export N_JOBS=${N_JOBS:-1}
 
-if ! ./scripts/build_openblas.sh ; then
-    echo "Failed to build OpenBLAS"
-    exit 1
+if [ ${USE_QSML} ]; then
+
+    export QSML_VERSION=${QSML_VERSION:-"0.15.2"}
+
+    export QSML_ROOT_DIR=${QSML_ROOT_DIR:-"/opt/Qualcomm/QSML-${QSML_VERSION}/android"}
+
+    if [ "$ANDROID_ABI" = "armeabi-v7a with NEON" ]; then
+      export QSML_DIR="${QSML_ROOT_DIR}/arm32/lp64/ndk-r11/"
+    elif [ "$ANDROID_ABI" = "arm64-v8a" ]; then
+      export QSML_DIR="${QSML_ROOT_DIR}/arm64/lp64/ndk-r11/"
+    else
+      echo "**** ERROR **** ANDROID_ABI incorrectly set, only \"armeabi-v7a with NEON\" or \"arm64-v8a\" are supported with QSML"
+    fi
+
+    echo "Using QSML from $QSML_DIR"
+
+else
+    if ! ./scripts/build_openblas.sh ; then
+      echo "Failed to build OpenBLAS"
+      exit 1
+    fi
 fi
 
 ./scripts/build_boost.sh

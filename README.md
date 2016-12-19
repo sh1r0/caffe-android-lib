@@ -18,8 +18,27 @@ export ANDROID_ABI="arm64-v8a" # Optional, see the note below
 ./build.sh <path/to/ndk>
 ```
 
+### Qualcomm Snapdragon Math Libraries (QSML)
+QSML is a high performance implementation of BLAS and LAPACK for Snapdragon.  QSML can be
+downloaded from the Qualcomm Developer Network [here](https://developer.qualcomm.com/software/snapdragon-math-libraries).
+Once QSML is installed, it can be enabled by setting:
+
+```
+export USE_QSML=1
+```
+
+By default, we assume QSML version 0.15.2, this can be changed by changing the appropriate environment variable below.  We also assume the default installation directory.  For instance:
+
+```
+export QSML_VERSION=0.15.2
+
+export QSML\_ROOT\_DIR=/opt/Qualcomm/QSML-$QSML_VERSION/
+```
+
+If you run into any problems or have any questions, feel free to contact us at our [forums](https://developer.qualcomm.com/forums/software/snapdragon-math-libraries) or via [email](qsml@qti.qualcomm.com).
+
 ### NOTE: OpenBLAS
-OpenBLAS is the only supported BLAS choice now, and the supported ABIs are the following:
+OpenBLAS is one of the supported BLAS choices, and the supported ABIs are the following:
 
 * `armeabi`
 * `armeabi-v7a-hard-softfp with NEON`
