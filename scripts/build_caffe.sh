@@ -1,43 +1,34 @@
-#!/usr/bin/env sh
-set -e
+#!/usr/bin/env bash
 
-if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo 'Either $NDK_ROOT should be set or provided as argument'
-    echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
-    echo "      '${0} /path/to/ndk'"
-    exit 1
-else
-    NDK_ROOT="${1:-${NDK_ROOT}}"
-fi
+set -eu
 
-ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
-WD=$(readlink -f "`dirname $0`/..")
-N_JOBS=${N_JOBS:-4}
-CAFFE_ROOT=${WD}/caffe
+# shellcheck source=/dev/null
+. "$(dirname "$0")/../config.sh"
+
+CAFFE_ROOT=${PROJECT_DIR}/caffe
 BUILD_DIR=${CAFFE_ROOT}/build
 
-ANDROID_LIB_ROOT=${WD}/android_lib
-BOOST_HOME=${ANDROID_LIB_ROOT}/boost
-GFLAGS_HOME=${ANDROID_LIB_ROOT}/gflags
-GLOG_ROOT=${ANDROID_LIB_ROOT}/glog
-OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
-PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
-SNAPPY_ROOT_DIR=${ANDROID_LIB_ROOT}/snappy
-export LEVELDB_ROOT=${ANDROID_LIB_ROOT}/leveldb
-export LMDB_DIR=${ANDROID_LIB_ROOT}/lmdb
-export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas"
+BOOST_HOME=${INSTALL_DIR}/boost
+GFLAGS_HOME=${INSTALL_DIR}/gflags
+GLOG_ROOT=${INSTALL_DIR}/glog
+OPENCV_ROOT=${INSTALL_DIR}/opencv/sdk/native/jni
+PROTOBUF_ROOT=${INSTALL_DIR}/protobuf
+SNAPPY_ROOT_DIR=${INSTALL_DIR}/snappy
+export LEVELDB_ROOT=${INSTALL_DIR}/leveldb
+export LMDB_DIR=${INSTALL_DIR}/lmdb
+export OpenBLAS_HOME="${INSTALL_DIR}/openblas"
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
-cd "${BUILD_DIR}"
+pushd "${BUILD_DIR}"
 
-cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
+cmake -DCMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK="${NDK_ROOT}" \
       -DCMAKE_BUILD_TYPE=Release \
       -DANDROID_ABI="${ANDROID_ABI}" \
       -DANDROID_NATIVE_API_LEVEL=21 \
       -DANDROID_USE_OPENMP=ON \
-      -DADDITIONAL_FIND_PATH="${ANDROID_LIB_ROOT}" \
+      -DADDITIONAL_FIND_PATH="${INSTALL_DIR}" \
       -DBUILD_python=OFF \
       -DBUILD_docs=OFF \
       -DCPU_ONLY=ON \
@@ -51,15 +42,15 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DGLOG_INCLUDE_DIR="${GLOG_ROOT}/include" \
       -DGLOG_LIBRARY="${GLOG_ROOT}/lib/libglog.a" \
       -DOpenCV_DIR="${OPENCV_ROOT}" \
-      -DPROTOBUF_PROTOC_EXECUTABLE="${ANDROID_LIB_ROOT}/protobuf_host/bin/protoc" \
+      -DPROTOBUF_PROTOC_EXECUTABLE="${INSTALL_DIR}/protobuf_host/bin/protoc" \
       -DPROTOBUF_INCLUDE_DIR="${PROTOBUF_ROOT}/include" \
       -DPROTOBUF_LIBRARY="${PROTOBUF_ROOT}/lib/libprotobuf.a" \
-	  -DSNAPPY_ROOT_DIR=${SNAPPY_ROOT_DIR} \
-      -DCMAKE_INSTALL_PREFIX="${ANDROID_LIB_ROOT}/caffe" \
+      -DSNAPPY_ROOT_DIR="${SNAPPY_ROOT_DIR}" \
+      -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/caffe" \
       ..
 
-make -j${N_JOBS}
-rm -rf "${ANDROID_LIB_ROOT}/caffe"
-make install/strip
+make -j"${N_JOBS}"
+rm -rf "${INSTALL_DIR}/caffe"
+make install
 
-cd "${WD}"
+popd

@@ -1,23 +1,13 @@
 #!/usr/bin/env bash
-set -e
 
-if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo "Either NDK_ROOT should be set or provided as argument"
-    echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
-    echo "      '${0} /path/to/ndk'"
-    exit 1
-else
-    NDK_ROOT=$(readlink -f "${1:-${NDK_ROOT}}")
-    export NDK_ROOT="${NDK_ROOT}"
-fi
+set -eu
 
-WD=$(readlink -f "$(dirname "$0")")
-cd "${WD}"
+# shellcheck source=/dev/null
+. "$(dirname "$0")/config.sh"
 
-export ANDROID_ABI="${ANDROID_ABI:-"arm64-v8a"}"
-export N_JOBS=${N_JOBS:-1}
+pushd "${PROJECT_DIR}"
 
-if ! ./scripts/build_openblas.sh ; then
+if ! ./scripts/build_openblas.sh; then
     echo "Failed to build OpenBLAS"
     exit 1
 fi
@@ -32,5 +22,7 @@ fi
 ./scripts/build_protobuf_host.sh
 ./scripts/build_protobuf.sh
 ./scripts/build_caffe.sh
+
+popd
 
 echo "DONE!!"

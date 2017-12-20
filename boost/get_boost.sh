@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 set -e
 
 BOOST_VER1=1
@@ -11,11 +12,11 @@ BOOST_DIR="boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}"
 
 if [ ! -e $BOOST_TAR ]; then
     echo "downloadng boost..."
-    wget -O $BOOST_TAR $BOOST_DOWNLOAD_LINK
+    wget -O $BOOST_TAR "$BOOST_DOWNLOAD_LINK"
 fi
 
 if [ ! -d $BOOST_DIR ]; then
     tar -jxf $BOOST_TAR
 fi
 
-patch -N -r - $BOOST_DIR/boost/thread/pthread/thread_data.hpp < patches/thread_data.hpp.patch || exit 0
+patch -N -r - $BOOST_DIR/boost/thread/pthread/thread_data.hpp < patches/thread_data.hpp.patch || true

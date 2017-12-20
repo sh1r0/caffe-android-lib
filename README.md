@@ -1,5 +1,6 @@
 Caffe-Android-Lib
 ===============
+
 ## Goal
 Porting [caffe](https://github.com/BVLC/caffe) to android platform
 
@@ -9,20 +10,38 @@ Porting [caffe](https://github.com/BVLC/caffe) to android platform
 * No support for hdf5
 
 ## Build
-Tested with Android NDK r11c and cmake 3.3.2 on Ubuntu 14.04
 
-```shell
+### RECOMMENDED: Using Docker
+```sh
 git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
 cd caffe-android-lib
-export ANDROID_ABI="arm64-v8a" # Optional, see the note below
-./build.sh <path/to/ndk>
+# build image
+docker build -t caffe-android-lib .
+# run a container for building your own caffe-android-lib, e.g.,
+docker run --rm --name caffe-android-builder \
+    -e ANDROID_ABI=x86_64 \
+    -e N_JOBS=2 \
+    -v $(pwd)/android_lib/x86_64:/caffe-android-lib/android_lib \
+    caffe-android-lib ./build.sh
+```
+
+### On local machine
+
+Tested with Android NDK r11c and cmake 3.5.2 on Ubuntu 14.04
+
+```sh
+git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
+cd caffe-android-lib
+export ANDROID_ABI=x86_64
+export NDK_ROOT=/path/to/ndk
+./build.sh
 ```
 
 ### NOTE: OpenBLAS
 OpenBLAS is the only supported BLAS choice now, and the supported ABIs are the following:
 
 * `armeabi`
-* `armeabi-v7a-hard-softfp with NEON`
+* `armeabi-v7a`
 * `arm64-v8a` (default)
 * `x86`
 * `x86_64`

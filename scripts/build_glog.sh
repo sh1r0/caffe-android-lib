@@ -1,39 +1,30 @@
-#!/usr/bin/env sh
-set -e
+#!/usr/bin/env bash
 
-if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo 'Either $NDK_ROOT should be set or provided as argument'
-    echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
-    echo "      '${0} /path/to/ndk'"
-    exit 1
-else
-    NDK_ROOT="${1:-${NDK_ROOT}}"
-fi
+set -eu
 
-ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
-WD=$(readlink -f "`dirname $0`/..")
-GLOG_ROOT=${WD}/glog
+# shellcheck source=/dev/null
+. "$(dirname "$0")/../config.sh"
+
+GLOG_ROOT=${PROJECT_DIR}/glog
 BUILD_DIR=${GLOG_ROOT}/build
-ANDROID_LIB_ROOT=${WD}/android_lib
-GFLAGS_HOME=${ANDROID_LIB_ROOT}/gflags
-N_JOBS=${N_JOBS:-4}
+GFLAGS_HOME=${INSTALL_DIR}/gflags
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
-cd "${BUILD_DIR}"
+pushd "${BUILD_DIR}"
 
-cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
+cmake -DCMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK="${NDK_ROOT}" \
       -DCMAKE_BUILD_TYPE=Release \
       -DANDROID_ABI="${ANDROID_ABI}" \
       -DANDROID_NATIVE_API_LEVEL=21 \
       -DGFLAGS_INCLUDE_DIR="${GFLAGS_HOME}/include" \
       -DGFLAGS_LIBRARY="${GFLAGS_HOME}/lib/libgflags.a" \
-      -DCMAKE_INSTALL_PREFIX="${ANDROID_LIB_ROOT}/glog" \
+      -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/glog" \
       ..
 
-make -j${N_JOBS}
-rm -rf "${ANDROID_LIB_ROOT}/glog"
+make -j"${N_JOBS}"
+rm -rf "${INSTALL_DIR}/glog"
 make install/strip
 
-cd "${WD}"
+popd
